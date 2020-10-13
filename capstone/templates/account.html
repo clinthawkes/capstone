@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} Account Details {% endblock %}
+{% block head % }
+	<title>Faulty Vault Bank</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+	<h1><b>Faulty Vault Bank</b></h1>
+	<br>
+	<h2>Account Details</h2>
+	<br>
+	<h4><i>Hello, User!</i></h3>
+	<br>
+	<form method="POST" action="/">
+		Creat Username <input type="text" name="Username" required />
+		<br>
+		Create Password <input type="text" name="Password" required />
+		<br>
+		<input type="submit" class="btn btn-danger" value="Withdraw Funds">
+	</form>
+{% endblock %}

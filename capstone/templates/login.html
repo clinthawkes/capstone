@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block head % }
+	<title>Faulty Vault Bank</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+	<h1><b>Faulty Vault Bank</b></h1>
+	<div class="alert alert-danger">
+		<i><strong>Warning!</strong> Vulnerability for [attack name] <strong>on!</strong> Click here to switch off
+	</div>
+	<br>
+	<h2>User Login</h2>
+	<br>
+	<form method="POST" action="/">
+		Username <input type="text" name="Username" required />
+		<br>
+		Password <input type="text" name="Password" required />
+		<br>
+		<input type="submit" class="btn btn-primary" value="Login">
+	</form>
+{% endblock %}
+
