@@ -12,12 +12,12 @@ def register():
     return render_template('register.html')
 
 @app.route('/login')
-def register():
+def login():
     return render_template('login.html')
 
 @app.route('/account')
-def register():
-    return render_template('acount.html')
+def account():
+    return render_template('account.html')
 
 
 
