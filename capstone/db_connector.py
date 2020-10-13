@@ -4,7 +4,7 @@ def connect_to_database():
     '''
     connects to a database and returns a database objects
     '''
-    db_connection = mysql.connector.connect(host='157.245.181.76', user='hawkesc', password='capstone2020', database='bank_app')
+    db_connection = mysql.connector.connect(host='localhost', user='hawkesc', password='capstone2020', database='bank_app')
     return db_connection
 
 def execute_query(db_connection = None, query = None, query_params = ()):
