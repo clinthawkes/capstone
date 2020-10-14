@@ -14,7 +14,7 @@
         <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!-- Other CSS -->
-        <link href="{{url_for('static', filename='styles/index.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
         <!-- Map -->
         <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
         <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
@@ -26,13 +26,13 @@
             <div class="collapse navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/index">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                 </ul>
             </div>
             <!-- Center Brand -->
             <div class="mx-auto order-0">
-                <a class="navbar-brand" href="/index">Website Security Research Project</a>
+                <a class="navbar-brand" href="/">Website Security Research Project</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2" aria-controls=".dual-collapse2" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -43,9 +43,6 @@
                     {% if not username %}
                     <li class="nav-item">
                         <a class="nav-link btn btn-dark" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-dark" href="/signup">Sign Up</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
