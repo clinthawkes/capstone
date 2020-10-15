@@ -1,8 +1,6 @@
 import random
-#import MySQLdb.cursors
 import re
 from flask import Flask, request, redirect, render_template, url_for, session
-#from flask_mysqldb import MySQL
 from capstone.db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
@@ -13,7 +11,7 @@ def index():
     return render_template('index.html')
 
 # creation of user account, necessary to view account details page
-@app.route('/register', methods = ['POST'])
+@app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
 	username = request.form['createUsername']
@@ -22,13 +20,13 @@ def register():
 	# generate a random bank balance between $10 - $1,000,000
 	bankBalance = random.randint(10, 1000000)
 	# check username is unique
-	query1 = 'SELECT (username) FROM `accounts` WHERE `user` = %s'
-	data1 = (username)
+	query1 = 'SELECT user FROM accounts WHERE user = %s'
+	data1 = (username, )
 	db_connection = connect_to_database()
 	check_name = execute_query(db_connection, query1, data1)
 	#cursor = mysql.connection.cursor()
 	#check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
-	if (check_name > 0):
+	if (check_name):
 	    return render_template('register_error1.html')
 	# check password requirements are met
 	specialChar = ['$', '@', '#', '%']
@@ -45,10 +43,11 @@ def register():
 	# if passwords don't match return error page 3
 	if (password1 != password2):
 	    return render_template('register_error3.html')
-	query = 'INSERT INTO `accounts` (`user`, `password`, `balance`) VALUES (%s, %s, %s)'
+	query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
 	data = (username, password1, bankBalance)
 	db_connection = connect_to_database()
 	execute_query(db_connection, query, data)
+        db_connection.commit() 
 	# will redirect to the login page (displaying success message)
 	# if they have successfully created an account    
 	return render_template('login_new.html')
@@ -58,14 +57,14 @@ def register():
 
 # login checks username and password against stored usernames and passwords in the database -
 # if matching a session is created
-@app.route('/login', methods = ['POST'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
 	user = request.form['username']
 	password = request.form['password']
 	# check if user account exists
 	connection = connect_to_database()
-	query = 'SELECT * FROM `accounts` WHERE `user` = %s AND password = %s'
+	query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
         data = (user, password)
 	userAccount = execute_query(connection, query, data) 
 	# if user account exists create session data which can be accessed in other routes
@@ -74,7 +73,7 @@ def login():
 	    session['id'] = account['id']
 	    session['user'] = account['user']
 	    # redirect to their account details page
-	    return render_template('account.html', user=user)
+	    return render_template('account.html', user=userAccount)
 	else:    
 	    return render_template('login_error.html')
     else:
@@ -90,6 +89,7 @@ def logout():
    session.pop('user', None)
    # Redirect to login page
    return redirect(url_for('login'))        
+
 
 # loads user's account details page if they are logged in - 
 # if not they are redirected to login page
