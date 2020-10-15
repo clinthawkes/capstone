@@ -13,7 +13,7 @@
 		</div>
 		<h2>Account Details</h2>
 		<br>
-		<h4><i>Hello,[User]!</i></h3>
+		<h4><i>Hello,{{ user }}!</i></h3>
 		<table style="width:50%" table border="1" table align = "center">
 			  <thead>
 				<th>Account Number</th>
@@ -31,6 +31,11 @@
 		<br>
 		<br>
 		<input type="submit" class="btn btn-danger" value="Withdraw Funds">
+		<br>
+		<br>
+		<form method="POST" action="{{ url_for('logout') }}">
+			<button type="submit" class="btn btn-primary">Logout</button>
+		</form>
 	</div>
 </div>	
 {% endblock %}
