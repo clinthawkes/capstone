@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block head %}
+	<title>Login</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% block content %}
+<div class="text-center">
+<div class = "jumbotron">
+	<h1 class="display-3"><b>Faulty Vault Bank</b></h1>
+	<div class = "container">
+		<div class="alert alert-danger">
+			&#9888;
+			<i><strong>Warning!</strong> Vulnerability for [attack name] <strong>on!</strong> Click <a href = "">here</a> to switch off</i>
+		</div>
+		<div class="alert alert-success">
+			Registration Successful! Please Login Below
+		</div>
+		<br>
+		<h2>User Login</h2>
+		<br>
+		<div class = "login">
+			<form action="/login" method="POST">
+				<div class="form-group">
+					<label for="UsernameInput">Username</label>
+					<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
+				</div>
+				<div class="form-group">
+					<label for="PasswordInput">Password </label>
+					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+				</div>
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+		</div>
+		<h6>Don't have an account? <a href = "http://157.245.181.76/register">Create Account</a></h6>
+	</div>	
+</div>	
+</div>		
+{% endblock %}

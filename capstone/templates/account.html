@@ -14,10 +14,20 @@
 		<h2>Account Details</h2>
 		<br>
 		<h4><i>Hello,[User]!</i></h3>
-		<br>
-		Account Number	{{accountNum}}
-		<br>
-		Account Balance	{{balance}}
+		<table style="width:50%" table border="1" table align = "center">
+			  <thead>
+				<th>Account Number</th>
+				<th>Account Balance </th>
+			  </thead>
+			  <tbody>
+				{% for r in row %}
+				<tr>
+					<td>{{r.0}}</td>
+					<td>{{r[3]}}</td>
+				</tr>
+				{% endfor %}
+				</tbody>	
+		</table>
 		<br>
 		<br>
 		<input type="submit" class="btn btn-danger" value="Withdraw Funds">
