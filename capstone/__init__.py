@@ -29,7 +29,7 @@ def register():
         if (check_name):
             return render_template('register_error1.html')
         # check password requirements are met
-        specialChar = ['$', '@', '#', '%']
+        specialChar = ['$', '@', '#', '%', '!', '^', '&', '*', '(' ')']
         if not any(char in specialChar for char in password1):
             return render_template('register_error2.html')
         if not any(char.islower() for char in password1):
