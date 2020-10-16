@@ -30,8 +30,9 @@
 		</table>
 		<br>
 		<br>
-		<input type="submit" class="btn btn-danger" value="Withdraw Funds">
-		<br>
+		<form method="POST" action="{{ url_for('withdraw') }}">
+			<button type="submit" class="btn btn-danger">Withdraw Funds</button>
+		</form>
 		<br>
 		<form method="POST" action="{{ url_for('logout') }}">
 			<button type="submit" class="btn btn-primary">Logout</button>
