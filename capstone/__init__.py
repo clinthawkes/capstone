@@ -14,45 +14,45 @@ def index():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
-	username = request.form['createUsername']
-	password1 = request.form['createPassword1']
-	password2 = request.form['createPassword2']
-	# generate a random bank balance between $10 - $1,000,000
-	bankBalance = random.randint(10, 1000000)
-	# check username is unique
-	query1 = 'SELECT user FROM accounts WHERE user = %s'
-	data1 = (username, )
-	db_connection = connect_to_database()
-	check_name = execute_query(db_connection, query1, data1)
-	#cursor = mysql.connection.cursor()
-	#check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
-	if (check_name):
-	    return render_template('register_error1.html')
-	# check password requirements are met
-	specialChar = ['$', '@', '#', '%']
-	if not any(char in specialChar for char in password1):
-	    return render_template('register_error2.html')
-	if not any(char.islower() for char in password1):
-	    return render_template('register_error2.html')
-	if not any(char.isupper() for char in password1):
-	    return render_template('register_error2.html')
-	if not any(char.isdigit() for char in password1):
-	    return render_template('register_error2.html')
-	if len(password1) < 8:
-	    return render_template('register_error2.html')
-	# if passwords don't match return error page 3
-	if (password1 != password2):
-	    return render_template('register_error3.html')
-	query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
-	data = (username, password1, bankBalance)
-	db_connection = connect_to_database()
-	execute_query(db_connection, query, data)
+        username = request.form['createUsername']
+        password1 = request.form['createPassword1']
+        password2 = request.form['createPassword2']
+        # generate a random bank balance between $10 - $1,000,000
+        bankBalance = random.randint(10, 1000000)
+        # check username is unique
+        query1 = 'SELECT user FROM accounts WHERE user = %s'
+        data1 = (username, )
+        db_connection = connect_to_database()
+        check_name = execute_query(db_connection, query1, data1).fetchall()
+        #cursor = mysql.connection.cursor()
+        #check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
+        if (check_name):
+            return render_template('register_error1.html')
+        # check password requirements are met
+        specialChar = ['$', '@', '#', '%']
+        if not any(char in specialChar for char in password1):
+            return render_template('register_error2.html')
+        if not any(char.islower() for char in password1):
+            return render_template('register_error2.html')
+        if not any(char.isupper() for char in password1):
+            return render_template('register_error2.html')
+        if not any(char.isdigit() for char in password1):
+            return render_template('register_error2.html')
+        if len(password1) < 8:
+            return render_template('register_error2.html')
+        # if passwords don't match return error page 3
+        if (password1 != password2):
+            return render_template('register_error3.html')
+        query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
+        data = (username, password1, bankBalance)
+        db_connection = connect_to_database()
+        execute_query(db_connection, query, data)
         db_connection.commit() 
-	# will redirect to the login page (displaying success message)
-	# if they have successfully created an account    
-	return render_template('login_new.html')
+        # will redirect to the login page (displaying success message)
+        # if they have successfully created an account    
+        return render_template('login_new.html')
     else:
-	return render_template('register.html')
+        return render_template('register.html')
 
 
 # login checks username and password against stored usernames and passwords in the database -
@@ -60,24 +60,24 @@ def register():
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-	user = request.form['username']
-	password = request.form['password']
-	# check if user account exists
-	connection = connect_to_database()
-	query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        user = request.form['username']
+        password = request.form['password']
+        # check if user account exists
+        connection = connect_to_database()
+        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
         data = (user, password)
-	userAccount = execute_query(connection, query, data) 
-	# if user account exists create session data which can be accessed in other routes
-	if userAccount:
-	    session['loggedin'] = True
-	    session['id'] = account['id']
-	    session['user'] = account['user']
-	    # redirect to their account details page
-	    return render_template('account.html', user=userAccount)
-	else:    
-	    return render_template('login_error.html')
+        userAccount = execute_query(connection, query, data).fetchall() 
+        # if user account exists create session data which can be accessed in other routes
+        if userAccount:
+            #session['loggedin'] = True
+            #session['id'] = account['id']
+            #session['user'] = account['user']
+            # redirect to their account details page
+            return render_template('account.html', user=userAccount)
+        else:    
+            return render_template('login_error.html')
     else:
-	    return render_template('login.html')
+        return render_template('login.html')
 
 
 # allows user to log out from their session
