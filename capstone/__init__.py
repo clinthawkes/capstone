@@ -116,5 +116,39 @@ def withdraw():
         #return "ok"
         return redirect(url_for('account', user = user))
 
+
+##################################################################
+#####             VULNERABILTY 1: SQL INJECTION             # ####
+##################################################################
+
+# using string concatenation instead of parameterized queries to access
+# a single user's account or dump the contents of the database
+@app.route('/login_sql_inj', methods = ['GET', 'POST'])
+def login_sql_inj():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        # check if user account exists
+        db_connection = connect_to_database()
+        cursor = db_connection.cursor()
+        query = "SELECT * FROM `accounts` WHERE `user` = '" + user + "' AND `password` = '" + password + "' ";
+        print(query)
+        #cursor.execute(query)
+        userAccount = cursor.fetchall()
+        db_connection.commit()
+        # if user account exists create session data which can be accessed in other routes
+        if userAccount:
+            #session['loggedin'] = True
+            #session['id'] = account['id']
+            #session['user'] = account['user']
+            # redirect to their account details page
+            return render_template('account.html', user=userAccount)
+        else:    
+            return render_template('login_error.html')
+    else:
+        return render_template('login_sql_inj.html')
+
+
+
 if __name__ == "__main__":
     app.run()
