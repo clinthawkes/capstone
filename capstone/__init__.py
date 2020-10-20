@@ -112,9 +112,12 @@ def withdraw():
         cursor = db_connection.cursor()
         cursor.execute("UPDATE `accounts` SET `balance` = 0 WHERE `user` = '%s'" % (request.form['username']))
         db_connection.commit()
+        query = "SELECT * FROM accounts WHERE user = %s"
+        data = (request.form['username'], )
+        updated = execute_query(db_connection, query, data).fetchall()
         #row_result1 = execute_query(db_connection1, newBalance, data).fetchone() 
         #return "ok"
-        return redirect(url_for('account', user = user))
+        return render_template('account.html', user = updated)
 
 
 ##################################################################
