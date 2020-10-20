@@ -133,7 +133,7 @@ def login_sql_inj():
         cursor = db_connection.cursor()
         query = "SELECT * FROM `accounts` WHERE `user` = '" + user + "' AND `password` = '" + password + "' ";
         print(query)
-        #cursor.execute(query)
+        cursor.execute(query)
         userAccount = cursor.fetchall()
         db_connection.commit()
         # if user account exists create session data which can be accessed in other routes
