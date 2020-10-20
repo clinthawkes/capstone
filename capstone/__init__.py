@@ -1,4 +1,5 @@
 import random
+import mysql.connector
 import re
 from flask import Flask, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
@@ -104,14 +105,16 @@ def account(user):
     else:
         return redirect(url_for('login'))
 
-@app.route('/withdraw<user>', methods=['POST'])
-def withdraw(user):
-    if 'loggedin' in session:
-        newBalance = 'UPDATE `accounts` SET `balance` = '0' WHERE `user` = %s' %(user)
-        row_result = execute_query(db_connection, newBalance).fetchone();
-        return render_template('account.html', user = session['user'], row = row_result)
-    else:
-        return redirect(url_for('login'))
+@app.route('/withdraw', methods=['POST'])
+def withdraw():
+        user = request.form['username']
+        db_connection = connect_to_database()
+        cursor = db_connection.cursor()
+        cursor.execute("UPDATE `accounts` SET `balance` = 0 WHERE `user` = '%s'" % (request.form['username']))
+        db_connection.commit()
+        #row_result1 = execute_query(db_connection1, newBalance, data).fetchone() 
+        #return "ok"
+        return redirect(url_for('account', user = user))
 
 if __name__ == "__main__":
     app.run()

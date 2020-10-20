@@ -32,6 +32,7 @@
 		<br>
 		<form method="POST" action="{{ url_for('withdraw') }}">
 			<button type="submit" class="btn btn-danger">Withdraw Funds</button>
+			<input type = "hidden" id = "username" name = "username" value = {{ user[0][1] }}>
 		</form>
 		<br>
 		<form method="POST" action="{{ url_for('logout') }}">
