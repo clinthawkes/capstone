@@ -5,7 +5,7 @@ window.addEventListener("load",function() {
             document.getElementById("2text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
             document.getElementById("1text").style.display = 'block';
-	    document.getElementById("login").href = "http://157.245.181.76/login_sql_inj";
+	    document.getElementById("login").href = "/login_sql_inj";
         } else if (target == '2') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
