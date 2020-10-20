@@ -21,3 +21,7 @@ window.addEventListener("load",function() {
         }
     });
 });
+
+document.getElementById("sql1").addEventListener("click", function(){
+	document.getElementById('UsernameInput').value = "gatesb'-- ";
+});
