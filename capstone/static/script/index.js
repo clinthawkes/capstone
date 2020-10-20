@@ -4,15 +4,16 @@ window.addEventListener("load",function() {
         if (target == '1'){
             document.getElementById("2text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
-            document.getElementById("1text").style.display = '';
+            document.getElementById("1text").style.display = 'block';
+	    document.getElementById("login").href = "http://157.245.181.76/login_sql_inj";
         } else if (target == '2') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
-            document.getElementById("2text").style.display = '';
+            document.getElementById("2text").style.display = 'block';
         } else if (target == '3') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
-            document.getElementById("3text").style.display = '';
+            document.getElementById("3text").style.display = 'block';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
