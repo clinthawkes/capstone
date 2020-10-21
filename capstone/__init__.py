@@ -121,7 +121,7 @@ def withdraw():
 
 
 ##################################################################
-#####             VULNERABILTY 1: SQL INJECTION             # ####
+#####             VULNERABILTY 1: SQL INJECTION             ######
 ##################################################################
 
 # using string concatenation instead of parameterized queries to access
@@ -135,10 +135,9 @@ def login_sql_inj():
         db_connection = connect_to_database()
         cursor = db_connection.cursor()
         query = "SELECT * FROM `accounts` WHERE `user` = '" + user + "' AND `password` = '" + password + "' ";
-        print(query)
         cursor.execute(query)
         userAccount = cursor.fetchall()
-        db_connection.commit()
+        #db_connection.commit()
         # if user account exists create session data which can be accessed in other routes
         if userAccount:
             #session['loggedin'] = True
