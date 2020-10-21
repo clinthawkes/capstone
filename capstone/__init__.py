@@ -88,8 +88,8 @@ def logout():
    session.pop('loggedin', None)
    session.pop('id', None)
    session.pop('user', None)
-   # Redirect to login page
-   return redirect(url_for('login'))        
+   # Redirect to main page
+   return redirect(url_for('index'))        
 
 
 # loads user's account details page if they are logged in - 
