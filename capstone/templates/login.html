@@ -7,7 +7,11 @@
 {% block content %}
 <div class="text-center">
 <div class = "jumbotron">
-	<h1 class="display-3"><b>Faulty Vault Bank</b></h1>
+	<div class="logo">
+		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
+	</div>	
+	<br>
+	<br>
 	<div class = "container">
 		<div class="alert alert-success" role="alert">
 			<h4 class="alert-heading"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-patch-check" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -16,23 +20,23 @@
 			</svg> You are on a Safe Login Page</h4>
 			Click <a href = "{{ url_for('login_sql_inj') }}">here</a> to Turn Vulnerability For SQL Injection On
 		</div>
-		<br>
-		<h2>User Login</h2>
-		<br>
-			<button id="sql1" class="btn btn-info">Login as User Without a Password</button>  <button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
-		<br>
-		<div class = "login">
-			<form action="/login" method="POST">
-				<div class="form-group">
-					<label for="UsernameInput">Username</label>
-					<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
-				</div>
-				<div class="form-group">
-					<label for="PasswordInput">Password </label>
-					<input type="password" id="PasswordInput" placeholder="Password" name="password">
-				</div>
-				<button type="submit" class="btn btn-primary">Login</button>
-			</form>
+	<br>
+	<h2>User Login</h2>
+	<br>
+		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>  <button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
+	<br>
+	<div class = "login">
+		<form action="/login" method="POST">
+			<div class="form-group">
+				<label for="UsernameInput">Username</label>
+				<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
+			</div>	
+			<div class="form-group">
+				<label for="PasswordInput">Password </label>
+				<input type="password" id="PasswordInput" placeholder="Password" name="password">
+			</div>
+			<button type="submit" class="btn btn-primary">Login</button>
+		</form>
 		</div>
 		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
 	</div>	
