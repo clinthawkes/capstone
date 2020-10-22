@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="bg-light main-wrapper">
+    <div class="main-wrapper">
         <div class="container bg-white main-wrapper pt-4">
             <p><h4>According to Security Magazine, a study was conducted and found that there is an attack on the web every 39 seconds. Many of these attacks are made possible due to outdated technologies, or because developers aren’t aware of standard security measures. Fortunately, many of these gaps in security can be mitigated through education and software updates.</h2>
             <p><h4>Our goal is to educate by demonstrating how these top attacks on the web are performed. After each demonstration, a detailed write-up that explains how these attacks may be prevented will be provided.</h2>
@@ -13,8 +13,12 @@
                     <option value="3">Three</option>
                 </select>
             </div>
-            <div class="container pt-5" style="display:none" id="1text">
-                <h4> Sample option 1 text </h4> 
+            <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="1text">
+                <h3>SQL Injection</h3> 
+		<h4>Overview</h4>
+		<p>SQL injection is a type of security vulnerability that allows a user to insert additional terms into website database queries. These additional terms may be used to view information without authorization, gain unauthorized access, corrupt/delete data, or deny service to other users. Finding the flaws that allow these additional hostile terms to be used is very easy to detect when reviewing code. This vulnerability is usually enabled when a server does not validate or “sanitize” input provided by the user. Many instances of this vulnerability have been found in code written by inexperienced developers who aren’t aware of the proper security procedures or in legacy code. Lucily, it is easy to prevent this vulnerability.</p>
+		<p>Follow along as we demonstrate how a SQL injection attack is performed and how to secure a server so these attacks are no longer permitted.</p>
+
             </div>
             <div class="container pt-5" style="display:none" id="2text">
                 <h4> Sample option 2 text </h4> 
@@ -22,8 +26,9 @@
             <div class="container pt-5" style="display:none" id="3text">
                 <h4> Sample option 3 text </h4> 
             </div>
-            <div class="container pt-5 d-flex justify-content-center">
-		<a class="btn btn-success w-50" style="display:none" id="login" href="/login">Login</a>
+            <div class="container pt-4 d-flex justify-content-center">
+		<a class="btn btn-secondary w-25 mr-5" style="display:none" id="download" href="/login">Download Writeup</a>
+		<a class="btn btn-success w-25" style="display:none" id="login" href="/login">Login</a>
             </div>
         </div> 
     </div>
