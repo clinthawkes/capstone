@@ -8,7 +8,7 @@ body{
 	line-height: $line-height-base;
 	color: $body-color;
 	text-align: left; // 3
-	background-color: $body-bg; // 2
+	background-color: $body-bg; // 2*/
 }
 
 /* Add padding to containers */
@@ -75,3 +75,9 @@ a {
 .nav-link {
   font-size: 20px !important;
 }
+
+.logo:before {
+  -moz-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+  -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+  box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
+ }
