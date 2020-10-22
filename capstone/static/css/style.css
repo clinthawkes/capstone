@@ -65,6 +65,7 @@ a {
 }
 
 .main-wrapper {
+  background-color: #f1f1f1;
   height: 100vh;
 }
 
@@ -76,8 +77,13 @@ a {
   font-size: 20px !important;
 }
 
+.writeup {
+  background-color: #f1f1f1 !important;
+}
+
 .logo:before {
   -moz-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
   -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
   box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
  }
+
