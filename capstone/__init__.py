@@ -167,7 +167,7 @@ def login_xss():
     if userAccount:
         return render_template('account.html', user=userAccount)
     else:    
-        return render_template('login_xss.html')
+        return render_template('login_xss.html', username=user)
   
 
 if __name__ == "__main__":
