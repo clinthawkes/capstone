@@ -18,7 +18,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '';
 	    document.getElementById("download").download = '';
-	    document.getElementById("login").href = '/login_sql_inj';
+	    document.getElementById("login").href = '/login_xss';
         } else if (target == '3') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
@@ -27,7 +27,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '';
 	    document.getElementById("download").download = '';
-	    document.getElementById("login").href = '/login_sql_inj';
+	    document.getElementById("login").href = '/login';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
