@@ -155,23 +155,20 @@ def login_sql_inj():
 #####          VULNERABILTY 2: CROSS SITE SCRIPTING         ######
 ##################################################################
 
-# autoescaping is turned off in in login_xss.html, using request.args.get
-# instead of request.form
-@app.route('/login_xss', methods = ['GET', 'POST'])
+# autoescaping is turned off in in login_xss.html
+@app.route('/login_xss', methods = ['GET'])
 def login_xss():
-    if request.method == 'POST':
-        user = request.args.get('username')
-        password = request.args.get('password')
-        connection = connect_to_database()
-        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
-        data = (user, password)
-        userAccount = execute_query(connection, query, data).fetchall() 
-        if userAccount:
-            return render_template('account.html', user=userAccount)
-        else:    
-            return render_template('login_xss.html')
-    else:
+    user = request.args.get('username')
+    password = request.args.get('password')    
+    connection = connect_to_database()
+    query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+    data = (user, password)
+    userAccount = execute_query(connection, query, data).fetchall() 
+    if userAccount:
+        return render_template('account.html', user=userAccount)
+    else:    
         return render_template('login_xss.html')
+  
 
 if __name__ == "__main__":
     app.run()
