@@ -7,6 +7,7 @@ from capstone.db_connector import connect_to_database, execute_query
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -146,11 +147,31 @@ def login_sql_inj():
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:    
-            return render_template('login_error.html')
+            return render_template('login_sql_inj.html')
     else:
         return render_template('login_sql_inj.html')
+        
+##################################################################
+#####          VULNERABILTY 2: CROSS SITE SCRIPTING         ######
+##################################################################
 
-
+# autoescaping is turned off in in login_xss.html, using request.args.get
+# instead of request.form
+@app.route('/login_xss', methods = ['GET', 'POST'])
+def login_xss():
+    if request.method == 'POST':
+        user = request.args.get('username')
+        password = request.args.get('password')
+        connection = connect_to_database()
+        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        data = (user, password)
+        userAccount = execute_query(connection, query, data).fetchall() 
+        if userAccount:
+            return render_template('account.html', user=userAccount)
+        else:    
+            return render_template('login_xss.html')
+    else:
+        return render_template('login_xss.html')
 
 if __name__ == "__main__":
     app.run()

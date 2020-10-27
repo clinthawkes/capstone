@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %} Login {% endblock %}
+{% block head %}
+	<title>Login</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+{% autoescape false %}
+<div class="text-center">
+<div class = "jumbotron">
+	<div class="logo">
+		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
+	</div>	
+	<br>
+	<br>
+	<div class = "container">
+		<div class="alert alert-danger">
+			&#9888;
+			<i><strong>Warning!</strong> Vulnerability for XSS <strong>on!</strong> Click <a href = "{{ url_for('login') }}">here</a> to switch off</i>
+		</div>
+		<br>
+		<h2>User Login</h2>
+		<br>
+		<button id="xss1" class="btn btn-danger">Button 1</button>
+		<br>
+		<div class = "login">
+			<form action="/login_xss" method="POST">
+				<div class="form-group">
+					<label for="UsernameInput">Username</label>
+					<input type="text" id="UsernameInput" value='{{ username }}' name="username">
+				</div>
+				<div class="form-group">
+					<label for="PasswordInput">Password </label>
+					<input type="password" id="PasswordInput" value="" name="password">
+				</div>
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+		</div>
+		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
+	</div>	
+</div>	
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='script/login_xss.js')}}"</script>
+{% endautoescape %}		
+{% endblock %}
+
+
+
