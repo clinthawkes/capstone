@@ -1,4 +1,4 @@
 document.getElementById("xss1").addEventListener("click", function(){
-	document.getElementById('UsernameInput').value = " '/><script>alert('XSS!');</script>";
+	document.getElementById('UsernameInput').value = "?user='/><script>alert('XSS!');</script>";
 });
 
