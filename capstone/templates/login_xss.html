@@ -21,17 +21,18 @@
 		<br>
 		<h2>User Login</h2>
 		<br>
-		<button id="xss1" class="btn btn-danger">JS code</button>
+		<button id="xss1" class="btn btn-danger">Test Vulnerability</button>
+		<button id="xss2" class="btn btn-danger" onclick = 'window.open("{{ url_for("phishing") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Vulnerability</button>
 		<br>
 		<div class = "login">
 			<form action="/login_xss" method="GET">
 				<div class="form-group">
 					<label for="UsernameInput">Username</label>
-					<input type="text" id="UsernameInput" value={{ username }} name="username">
+					<input type="text" id="UsernameInput" placeholder = "Enter Username" value={{ username }} name="username">
 				</div>
 				<div class="form-group">
 					<label for="PasswordInput">Password </label>
-					<input type="password" id="PasswordInput" value="" name="password">
+					<input type="password" id="PasswordInput" placeholder = "Password" value="" name="password" >
 				</div>
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
