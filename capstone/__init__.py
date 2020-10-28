@@ -155,6 +155,13 @@ def login_sql_inj():
 #####          VULNERABILTY 2: CROSS SITE SCRIPTING         ######
 ##################################################################
 
+# displays an example of a phishing email received by the user 
+# containing a malicious link to a vulnerable web page with an
+# XSS payload
+@app.route('/phishing')
+def phishing():
+     return render_template('phishing.html')
+
 # autoescaping is turned off in in login_xss.html
 @app.route('/login_xss', methods = ['GET'])
 def login_xss():

