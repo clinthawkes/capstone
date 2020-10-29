@@ -18,14 +18,20 @@
 				<path fill-rule="evenodd" d="M10.273 2.513l-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
 				<path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
 			</svg> You are on a Safe Login Page</h4>
-			Click <a id="switchOn" href = "{{ referrer }}">here</a> to Turn Vulnerability For <span id="vulnerability"></span> On
-			<p id="refer" hidden>{{ referrer }}</p>
+			<div id="unsafe">Click <a id="switchOn" href = "{{ referrer }}">here</a> to Turn Vulnerability For <span id="vulnerability"></span> On</div>
+				<p id="refer" hidden>{{ referrer }}</p>
 		</div>
 	<br>
 	<h2>User Login</h2>
-	<br>
-		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>  <button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
-	<br>
+	<div id="sqlButtons" style="display:none">
+		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>  
+		<button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
+	</div>
+	<div id="xssButtons" style="display:none"> 
+		<button id="xss1" class="btn btn-info">Test Reflected XSS</button>
+		<button id="xss2" class="btn btn-info" onclick = 'window.open("{{ url_for("phishing") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
+		<button id="xss3" class="btn btn-info">Test Stored XSS</button>
+	</div>
 	<div class = "login">
 		<form action="/login" method="POST">
 			<div class="form-group">
