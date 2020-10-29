@@ -161,6 +161,11 @@ def login_sql_inj():
 @app.route('/phishing')
 def phishing():
      return render_template('phishing.html')
+     
+@app.route('/hacker_info' , methods = ['GET','POST'])
+def hacker_info():
+    print(request.get_json())
+    return render_template('hacker_info.html')
 
 # autoescaping is turned off in in login_xss.html
 @app.route('/login_xss', methods = ['GET'])
