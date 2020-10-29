@@ -164,7 +164,8 @@ def phishing():
      
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
-    print(request.get_json())
+    print(request.args.get('username'))
+    print(request.args.get('password'))
     return render_template('hacker_info.html')
 
 # autoescaping is turned off in in login_xss.html
