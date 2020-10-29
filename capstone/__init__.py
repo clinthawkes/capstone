@@ -79,7 +79,8 @@ def login():
         else:    
             return render_template('login_error.html')
     else:
-        return render_template('login.html')
+        referrer = request.referrer
+        return render_template('login.html', referrer=referrer)
 
 
 # allows user to log out from their session
