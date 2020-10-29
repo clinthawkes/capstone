@@ -1,3 +1,5 @@
+import os
+import string
 import random
 import mysql.connector
 import re
@@ -79,7 +81,8 @@ def login():
         else:    
             return render_template('login_error.html')
     else:
-        return render_template('login.html')
+        referrer = request.referrer
+        return render_template('login.html', referrer=referrer)
 
 
 # allows user to log out from their session
@@ -164,9 +167,18 @@ def phishing():
      
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
-    print(request.args.get('username'))
-    print(request.args.get('password'))
-    return render_template('hacker_info.html')
+    user = request.args.get('username')
+    password = request.args.get('password')
+    if user:
+        f = open("/var/www/capstone/capstone/static/files/hacked.txt", "a")
+        data = str(user) + " " + str(password) + ',' 
+        f.write(data)
+        f.close()
+    f = open("/var/www/capstone/capstone/static/files/hacked.txt", "r")
+    contents = f.read()
+    final = contents.split(',')
+    f.close()
+    return render_template('hacker_info.html', contents=final)
 
 # autoescaping is turned off in in login_xss.html
 @app.route('/login_xss', methods = ['GET'])
@@ -178,7 +190,7 @@ def login_xss():
     data = (user, password)
     userAccount = execute_query(connection, query, data).fetchall() 
     if userAccount:
-        return render_template('account.html', user=userAccount)
+        return render_template('account_xss.html', user=userAccount)
     else:    
         return render_template('login_xss.html', username=user)
   
