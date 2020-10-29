@@ -165,6 +165,10 @@ def login_sql_inj():
 def phishing():
      return render_template('phishing.html')
      
+@app.route('/phishing_safe')
+def phishing():
+     return render_template('phishing_safe.html')
+     
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
     user = request.args.get('username')
