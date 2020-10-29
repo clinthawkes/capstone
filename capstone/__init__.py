@@ -172,7 +172,7 @@ def login_xss():
     data = (user, password)
     userAccount = execute_query(connection, query, data).fetchall() 
     if userAccount:
-        return render_template('account.html', user=userAccount)
+        return render_template('account_xss.html', user=userAccount)
     else:    
         return render_template('login_xss.html', username=user)
   
