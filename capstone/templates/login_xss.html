@@ -21,8 +21,8 @@
 		<br>
 		<h2>User Login</h2>
 		<br>
-		<button id="xss1" class="btn btn-danger">Test Vulnerability</button>
-		<button id="xss2" class="btn btn-danger" onclick = 'window.open("{{ url_for("phishing") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Vulnerability</button>
+		<button id="xss1" class="btn btn-danger">Test Reflected XSS</button>
+		<button id="xss2" class="btn btn-danger" onclick = 'window.open("{{ url_for("phishing") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
 		<button id="xss3" class="btn btn-danger">Test Stored XSS</button>
 		<br>
 		<div class = "login">
