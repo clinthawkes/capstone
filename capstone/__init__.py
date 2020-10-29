@@ -164,6 +164,12 @@ def login_sql_inj():
 @app.route('/phishing')
 def phishing():
      return render_template('phishing.html')
+
+# displays an example of a phishing email received by the user 
+# containing a malicious link to a non-vulnerable web page 
+@app.route('/phishing_safe')
+def phishing_safe():
+     return render_template('phishing_safe.html')     
      
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
