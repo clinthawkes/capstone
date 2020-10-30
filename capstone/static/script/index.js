@@ -16,8 +16,8 @@ window.addEventListener("load",function() {
             document.getElementById("2text").style.display = 'block';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
-	    document.getElementById("download").href = '';
-	    document.getElementById("download").download = '';
+	    document.getElementById("download").href = '/static/files/xss';
+	    document.getElementById("download").download = 'XSS_Writeup.pdf';
 	    document.getElementById("login").href = '/login_xss';
         } else if (target == '3') {
             document.getElementById("1text").style.display = 'none';

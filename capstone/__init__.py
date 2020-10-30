@@ -66,6 +66,7 @@ def login():
     if request.method == 'POST':
         user = request.form['username']
         password = request.form['password']
+        token = request.form['attackToken']
         # check if user account exists
         connection = connect_to_database()
         query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
@@ -79,7 +80,7 @@ def login():
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:    
-            return render_template('login_error.html')
+            return render_template('login_error.html', token=token)
     else:
         referrer = request.referrer
         return render_template('login.html', referrer=referrer)
