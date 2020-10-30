@@ -1,10 +1,8 @@
 window.addEventListener("load",function() {
-	var path = document.getElementById('refer').innerHTML;
-	var page = path.split("/");
-
-	if (page[page.length - 1] == "login_sql_inj"){
+	if (document.getElementById("attackToken").value == 1){
 		document.getElementById('vulnerability').innerHTML = "SQL Injection";
 		document.getElementById("attackToken").value = 1;
+		document.getElementById("switchOn").href = "/login_sql_inj";
 		document.getElementById("sqlButtons").style.display = '';
 		document.getElementById("sql1").addEventListener("click", function(){
 			document.getElementById('UsernameInput').value = "gatesb'-- ";
@@ -13,8 +11,9 @@ window.addEventListener("load",function() {
 			document.getElementById('UsernameInput').value = "gatesb' or 1=1 UNION SELECT user, id, balance, password FROM accounts;#";
 		});
 
-	} else if (page[page.length - 1] == "login_xss"){
+	} else if (document.getElementById("attackToken").value == 2){
 		document.getElementById('vulnerability').innerHTML = "Cross Site Scripting";
+		document.getElementById("switchOn").href = "/login_xss";
 		document.getElementById("xssButtons").style.display = '';
 		document.getElementById("attackToken").value = 2;
 		document.getElementById("xss1").addEventListener("click", function(){
