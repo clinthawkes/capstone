@@ -30,6 +30,13 @@
 		    <li>Stored XSS - attack is mitigated via the website’s backend database</li>
 		    <li>DOM-based XSS - attack is mitigated via the client-side Javascript code</li>
 		</ul>
+		<h5>Reflected XSS</h5>
+		<p>Reflected XSS occurs when a website receives data in a HTTP request and ‘reflects back’ the data to the user. The website will not process or store this data, thus allowing an attacker to inject malicious content into the website.</p>
+		<p>One way an attacker can elicit a reflected XSS attack is to construct a malicious URL and, by way of a phishing email, trick the user into clicking on the malicious URL. This will direct the user to the vulnerable web page injected with the attacker's XSS payload which will execute in the user’s browser. The attacker may try to mimic the login page of the website, and when the user attempts to log in via the fake login page the attacker can steal the user’s login credentials.</p>
+		<h5>Stored XSS</h5>
+		<p>Stored XSS occurs when an attacker stores a XSS script on a server for later retrieval. The storage of the script can be in the form of forum posts, comments, usernames, or any other form of input that can be viewed at a later time. After the script has been stored, the attacker can carry out an attack by requesting the stored script from the server.</p>
+		<h5>Dom-based XSS</h5>
+		<p>Dom-based XSS occurs when there is client-side javascript that processes untrusted data from a user and writes it back out to the DOM. When a user is able to control what is displayed in the DOM, there is potential for scripts to be constructed by users that may cause harm. A good rule is to never use client-side javascript to populate the DOM with user supplied data.</p>
             </div>
             <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="3text">
                 <h4> Sample option 3 text </h4> 
@@ -38,6 +45,7 @@
 		<a class="btn btn-secondary w-25 mr-5" style="display:none" id="download" href="" download="">Download Writeup</a>
 		<a class="btn btn-success w-25" style="display:none" id="login" href="/login">Login</a>
             </div>
+	    <br><br>
         </div> 
     </div>
     <script type="text/javascript" src="{{url_for('static', filename='script/index.js')}}"></script>
