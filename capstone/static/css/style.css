@@ -86,4 +86,35 @@ a {
   -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
   box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
  }
+ 
+ .icon1 {
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: powderblue;
+  color: white;
+}
+ .icon2 {
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #32a873;
+  color: white;
+}
 
+ .icon3 {
+  display: inline-block;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: coral;
+  color: white;
+}
