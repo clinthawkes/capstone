@@ -200,7 +200,45 @@ def login_xss():
         return render_template('account_xss.html', user=userAccount)
     else:    
         return render_template('login_xss.html', username=user)
-  
+
+
+##################################################################
+#####       VULNERABILTY 3: SECURITY MISCONFIGURATION       ######
+##################################################################
+
+@app.route('/account_admin/<user>', methods=['GET'])
+def account_admin(user):
+    # check user is logged in
+    if 'loggedin' in session:
+        display_row = 'SELECT * from `accounts` WHERE `user` = %s' %(user)
+        row_result = execute_query(db_connection, display_row).fetchone();
+        return render_template('account_admin.html', user = session['user'], row = row_result)
+    # if not logged in redirect to login page
+    else:
+        return redirect(url_for('login_misconfig'))
+
+
+@app.route('/login_misconfig', methods = ['POST', 'GET'])
+def login_misconfig():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        token = request.form['attackToken']
+        # check if user account exists
+        connection = connect_to_database()
+        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        data = (user, password)
+        userAccount = execute_query(connection, query, data).fetchall() 
+        # if user account exists create session data which can be accessed in other routes
+        if userAccount:
+            return render_template('account_admin.html', user=userAccount)
+        else:    
+            return render_template('login_error.html', token=token)
+    else:
+        referrer = request.referrer
+        return render_template('login_misconfig.html', referrer=referrer)
+
+
 
 if __name__ == "__main__":
     app.run()
