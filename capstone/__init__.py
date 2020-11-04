@@ -226,7 +226,7 @@ def login_misconfig():
         token = request.form['attackToken']
         # check if user account exists
         connection = connect_to_database()
-        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        query = 'SELECT * FROM default_accounts WHERE user = %s AND password = %s'
         data = (user, password)
         userAccount = execute_query(connection, query, data).fetchall() 
         # if user account exists create session data which can be accessed in other routes
