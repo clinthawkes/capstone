@@ -5,7 +5,6 @@ import mysql.connector
 import re
 from flask import Flask, flash, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
-from capstone.helper import file_read_from_tail
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
