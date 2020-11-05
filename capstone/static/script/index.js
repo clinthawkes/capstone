@@ -25,9 +25,9 @@ window.addEventListener("load",function() {
             document.getElementById("3text").style.display = 'block';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
-	    document.getElementById("download").href = '';
-	    document.getElementById("download").download = '';
-	    document.getElementById("login").href = '/login';
+	    document.getElementById("download").href = '/static/files/security_misconfig.pdf';
+	    document.getElementById("download").download = 'Security_Misconfig_Writeup.pdf';
+	    document.getElementById("login").href = '/login_misconfig';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';

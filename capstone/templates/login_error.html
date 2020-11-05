@@ -34,6 +34,10 @@
 			<button id="xss2" class="btn btn-info" onclick = 'window.open("{{ url_for("phishing_safe") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
 			<button id="xss3" class="btn btn-info">Test Stored XSS</button>
 		</div>
+		<div id="misconfigButtons" style="display:none">
+			<button id="misconfig1" class="btn btn-info">Login with Default Credentials</button>
+			<button id="misconfig2" class="btn btn-info">Display Detailed Error Message</button>
+		</div>
 		<div class = "login">
 			<form action="/login" method="POST">
 				<div class="form-group">

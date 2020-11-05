@@ -10,43 +10,45 @@
                     <option selected>Select a vulnerability to explore</option>
                     <option value="1">SQL Injection</option>
                     <option value="2">Cross Site Scripting (XSS)</option>
-                    <option value="3">Three</option>
+                    <option value="3">Security Misconfiguration</option>
                 </select>
             </div>
             <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="1text">
-                <h3>SQL Injection</h3> 
-		<h4>Overview</h4>
-		<p>SQL injection is a type of security vulnerability that allows a user to insert additional terms into website database queries. These additional terms may be used to view information without authorization, gain unauthorized access, corrupt/delete data, or deny service to other users. Finding the flaws that allow these additional hostile terms to be used is very easy to detect when reviewing code. This vulnerability is usually enabled when a server does not validate or “sanitize” input provided by the user. Many instances of this vulnerability have been found in code written by inexperienced developers who aren’t aware of the proper security procedures or in legacy code. Lucily, it is easy to prevent this vulnerability.</p>
-		<p>Follow along as we demonstrate how a SQL injection attack is performed and how to secure a server so these attacks are no longer permitted.</p>
+                <h3>SQL Injection</h3>
+                <h4>Overview</h4>
+                <p>SQL injection is a type of security vulnerability that allows a user to insert additional terms into website database queries. These additional terms may be used to view information without authorization, gain unauthorized access, corrupt/delete data, or deny service to other users. Finding the flaws that allow these additional hostile terms to be used is very easy to detect when reviewing code. This vulnerability is usually enabled when a server does not validate or “sanitize” input provided by the user. Many instances of this vulnerability have been found in code written by inexperienced developers who aren’t aware of the proper security procedures or in legacy code. Lucily, it is easy to prevent this vulnerability.</p>
+                <p>Follow along as we demonstrate how a SQL injection attack is performed and how to secure a server so these attacks are no longer permitted.</p>
 
             </div>
             <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="2text">
-                <h3>Cross Site Scripting (XSS)</h3> 
-		<h4>Overview</h4>
-		<p>Cross-site scripting (XSS) is a web security vulnerability that attackers can exploit in order to interfere with how a user interacts with a vulnerable website.</p>
-		There are three types of XSS attacks:
-		<ul>
-		    <li>Reflected XSS - attack is mitigated via a HTTP request</li>
-		    <li>Stored XSS - attack is mitigated via the website’s backend database</li>
-		    <li>DOM-based XSS - attack is mitigated via the client-side Javascript code</li>
-		</ul>
-		<h5>Reflected XSS</h5>
-		<p>Reflected XSS occurs when a website receives data in a HTTP request and ‘reflects back’ the data to the user. The website will not process or store this data, thus allowing an attacker to inject malicious content into the website.</p>
-		<p>One way an attacker can elicit a reflected XSS attack is to construct a malicious URL and, by way of a phishing email, trick the user into clicking on the malicious URL. This will direct the user to the vulnerable web page injected with the attacker's XSS payload which will execute in the user’s browser. The attacker may try to mimic the login page of the website, and when the user attempts to log in via the fake login page the attacker can steal the user’s login credentials.</p>
-		<h5>Stored XSS</h5>
-		<p>Stored XSS occurs when an attacker stores a XSS script on a server for later retrieval. The storage of the script can be in the form of forum posts, comments, usernames, or any other form of input that can be viewed at a later time. After the script has been stored, the attacker can carry out an attack by requesting the stored script from the server.</p>
-		<h5>Dom-based XSS</h5>
-		<p>Dom-based XSS occurs when there is client-side javascript that processes untrusted data from a user and writes it back out to the DOM. When a user is able to control what is displayed in the DOM, there is potential for scripts to be constructed by users that may cause harm. A good rule is to never use client-side javascript to populate the DOM with user supplied data.</p>
+                <h3>Cross Site Scripting (XSS)</h3>
+                <h4>Overview</h4>
+                <p>Cross-site scripting (XSS) is a web security vulnerability that attackers can exploit in order to interfere with how a user interacts with a vulnerable website.</p>
+                There are three types of XSS attacks:
+                <ul>
+                    <li>Reflected XSS - attack is mitigated via a HTTP request</li>
+                    <li>Stored XSS - attack is mitigated via the website’s backend database</li>
+                    <li>DOM-based XSS - attack is mitigated via the client-side Javascript code</li>
+                </ul>
+                <h5>Reflected XSS</h5>
+                <p>Reflected XSS occurs when a website receives data in a HTTP request and ‘reflects back’ the data to the user. The website will not process or store this data, thus allowing an attacker to inject malicious content into the website.</p>
+                <p>One way an attacker can elicit a reflected XSS attack is to construct a malicious URL and, by way of a phishing email, trick the user into clicking on the malicious URL. This will direct the user to the vulnerable web page injected with the attacker's XSS payload which will execute in the user’s browser. The attacker may try to mimic the login page of the website, and when the user attempts to log in via the fake login page the attacker can steal the user’s login credentials.</p>
+                <h5>Stored XSS</h5>
+                <p>Stored XSS occurs when an attacker stores a XSS script on a server for later retrieval. The storage of the script can be in the form of forum posts, comments, usernames, or any other form of input that can be viewed at a later time. After the script has been stored, the attacker can carry out an attack by requesting the stored script from the server.</p>
+                <h5>Dom-based XSS</h5>
+                <p>Dom-based XSS occurs when there is client-side javascript that processes untrusted data from a user and writes it back out to the DOM. When a user is able to control what is displayed in the DOM, there is potential for scripts to be constructed by users that may cause harm. A good rule is to never use client-side javascript to populate the DOM with user supplied data.</p>
             </div>
             <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="3text">
-                <h4> Sample option 3 text </h4> 
+                <h3>Security Misconfiguration</h3>
+                <h4>Overview</h4>
+                <p>This will be the overiew of the writeup</p>
             </div>
             <div class="container pt-4 d-flex justify-content-center">
 		<a class="btn btn-secondary w-25 mr-5" style="display:none" id="download" href="" download="">Download Writeup</a>
 		<a class="btn btn-success w-25" style="display:none" id="login" href="/login">Login</a>
             </div>
 	    <br><br>
-        </div> 
+        </div>
     </div>
     <script type="text/javascript" src="{{url_for('static', filename='script/index.js')}}"></script>
 {% endblock %}

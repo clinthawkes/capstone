@@ -9,7 +9,7 @@
 <div class = "jumbotron">
 	<div class="logo">
 		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
-	</div>	
+	</div>
 	<br>
 	<br>
 	<div class = "container">
@@ -24,20 +24,25 @@
 	<br>
 	<h2>User Login</h2>
 	<div id="sqlButtons" style="display:none">
-		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>  
+		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>
 		<button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
 	</div>
-	<div id="xssButtons" style="display:none"> 
+	<div id="xssButtons" style="display:none">
 		<button id="xss1" class="btn btn-info">Test Reflected XSS</button>
 		<button id="xss2" class="btn btn-info" onclick = 'window.open("{{ url_for("phishing_safe") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
 		<button id="xss3" class="btn btn-info">Test Stored XSS</button>
 	</div>
+	<div id="misconfigButtons" style="display:none">
+		<button id="misconfig1" class="btn btn-info">Login with Default Credentials</button>
+		<button id="misconfig2" class="btn btn-info">Display Detailed Error Message</button>
+	</div>
 	<div class = "login">
+
 		<form action="/login" method="POST">
 			<div class="form-group">
 				<label for="UsernameInput">Username</label>
 				<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
-			</div>	
+			</div>
 			<div class="form-group">
 				<label for="PasswordInput">Password </label>
 				<input type="password" id="PasswordInput" placeholder="Password" name="password">
@@ -47,9 +52,9 @@
 		</form>
 		</div>
 		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
-	</div>	
-</div>	
-</div>		
-<script type="text/javascript" src="{{url_for('static', filename='script/login.js')}}"></script>		
+	</div>
+</div>
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='script/login.js')}}"></script>
 {% endblock %}
 

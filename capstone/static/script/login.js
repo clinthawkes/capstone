@@ -24,6 +24,17 @@ window.addEventListener("load",function() {
 			document.getElementById('UsernameInput').value = "><script>alert(':(');</script>";
 			document.getElementById('PasswordInput').value = "aaAA22@@";
 		});
+	} else if (page[page.length - 1] == "login_misconfig"){
+		document.getElementById('vulnerability').innerHTML = "Security Misconfiguration";
+		document.getElementById("misconfigButtons").style.display = '';
+		document.getElementById("attackToken").value = 3;
+		document.getElementById("misconfig1").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "admin";
+			document.getElementById('PasswordInput').value = "admin";
+		});
+		document.getElementById("misconfig2").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "fakeUsername";
+		});
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}
