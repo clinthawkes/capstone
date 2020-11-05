@@ -77,6 +77,10 @@ a {
   font-size: 20px !important;
 }
 
+.flash-message {
+  font-size: 30px !important;
+}
+
 .writeup {
   background-color: lightgray;
 }
@@ -86,7 +90,7 @@ a {
   -webkit-box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
   box-shadow:inset 0px 0px 6px 6px rgba(255,255,255,1);
  }
- 
+
  .icon1 {
   display: inline-block;
   padding: 0 25px;

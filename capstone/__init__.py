@@ -3,8 +3,9 @@ import string
 import random
 import mysql.connector
 import re
-from flask import Flask, request, redirect, render_template, url_for, session
+from flask import Flask, flash, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
+from capstone.helper import file_read_from_tail
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
@@ -51,9 +52,9 @@ def register():
         data = (username, password1, bankBalance)
         db_connection = connect_to_database()
         execute_query(db_connection, query, data)
-        db_connection.commit() 
+        db_connection.commit()
         # will redirect to the login page (displaying success message)
-        # if they have successfully created an account    
+        # if they have successfully created an account
         return render_template('login_new.html')
     else:
         return render_template('register.html')
@@ -71,7 +72,7 @@ def login():
         connection = connect_to_database()
         query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
         data = (user, password)
-        userAccount = execute_query(connection, query, data).fetchall() 
+        userAccount = execute_query(connection, query, data).fetchall()
         # if user account exists create session data which can be accessed in other routes
         if userAccount:
             #session['loggedin'] = True
@@ -79,7 +80,7 @@ def login():
             #session['user'] = account['user']
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
-        else:    
+        else:
             return render_template('login_error.html', token=token)
     else:
         referrer = request.referrer
@@ -94,10 +95,10 @@ def logout():
    session.pop('id', None)
    session.pop('user', None)
    # Redirect to main page
-   return redirect(url_for('index'))        
+   return redirect(url_for('index'))
 
 
-# loads user's account details page if they are logged in - 
+# loads user's account details page if they are logged in -
 # if not they are redirected to login page
 @app.route('/account/<user>', methods=['GET'])
 def account(user):
@@ -120,7 +121,7 @@ def withdraw():
         query = "SELECT * FROM accounts WHERE user = %s"
         data = (request.form['username'], )
         updated = execute_query(db_connection, query, data).fetchall()
-        #row_result1 = execute_query(db_connection1, newBalance, data).fetchone() 
+        #row_result1 = execute_query(db_connection1, newBalance, data).fetchone()
         #return "ok"
         return render_template('account.html', user = updated)
 
@@ -150,35 +151,35 @@ def login_sql_inj():
             #session['user'] = account['user']
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
-        else:    
+        else:
             return render_template('login_sql_inj.html')
     else:
         return render_template('login_sql_inj.html')
-        
+
 ##################################################################
 #####          VULNERABILTY 2: CROSS SITE SCRIPTING         ######
 ##################################################################
 
-# displays an example of a phishing email received by the user 
+# displays an example of a phishing email received by the user
 # containing a malicious link to a vulnerable web page with an
 # XSS payload
 @app.route('/phishing')
 def phishing():
      return render_template('phishing.html')
 
-# displays an example of a phishing email received by the user 
-# containing a malicious link to a non-vulnerable web page 
+# displays an example of a phishing email received by the user
+# containing a malicious link to a non-vulnerable web page
 @app.route('/phishing_safe')
 def phishing_safe():
-     return render_template('phishing_safe.html')     
-     
+     return render_template('phishing_safe.html')
+
 @app.route('/hacker_info' , methods = ['GET','POST'])
 def hacker_info():
     user = request.args.get('username')
     password = request.args.get('password')
     if user:
         f = open("/var/www/capstone/capstone/static/files/hacked.txt", "a")
-        data = str(user) + " " + str(password) + ',' 
+        data = str(user) + " " + str(password) + ','
         f.write(data)
         f.close()
     f = open("/var/www/capstone/capstone/static/files/hacked.txt", "r")
@@ -191,14 +192,14 @@ def hacker_info():
 @app.route('/login_xss', methods = ['GET'])
 def login_xss():
     user = request.args.get('username')
-    password = request.args.get('password')    
+    password = request.args.get('password')
     connection = connect_to_database()
     query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
     data = (user, password)
-    userAccount = execute_query(connection, query, data).fetchall() 
+    userAccount = execute_query(connection, query, data).fetchall()
     if userAccount:
         return render_template('account_xss.html', user=userAccount)
-    else:    
+    else:
         return render_template('login_xss.html', username=user)
 
 
@@ -228,12 +229,22 @@ def login_misconfig():
         connection = connect_to_database()
         query = 'SELECT * FROM default_accounts WHERE user = %s AND password = %s'
         data = (user, password)
-        userAccount = execute_query(connection, query, data).fetchall() 
+        userAccount = execute_query(connection, query, data).fetchall()
         # if user account exists create session data which can be accessed in other routes
         if userAccount:
             return render_template('account_admin.html', user=userAccount)
-        else:    
-            return render_template('login_error.html', token=token)
+        else:
+            #query2 = 'SELECT a.*, convert(a.argument using utf8) FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
+            query2 = 'SELECT * FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
+            log = execute_query(connection, query2).fetchall() 
+            for row in log:
+                for col in row:
+                    if isinstance(col, str):
+                        for char in col:
+                            if char == '"':
+                                char = "'"
+            flash('Incorrect Username/Password', 'danger')
+            return render_template('login_misconfig.html', log=log, token=token)
     else:
         referrer = request.referrer
         return render_template('login_misconfig.html', referrer=referrer)

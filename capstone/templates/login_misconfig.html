@@ -9,7 +9,7 @@
 <div class = "jumbotron">
 	<div class="logo">
 		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
-	</div>	
+	</div>
 	<br>
 	<br>
 	<div class = "container">
@@ -22,15 +22,32 @@
 	<br>
 	<h2>User Login</h2>
 	<br>
-	<button id="misconfig1" class="btn btn-danger">Login with Default Credentials</button>  
+	<button id="misconfig1" class="btn btn-danger">Login with Default Credentials</button>
 	<button id="misconfig2" class="btn btn-danger">Display Detailed Error Message</button>
 	<br>
+	<div class="container mt-3">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+
+		{% for category, message in messages %}
+				<!-- Success Alert -->
+			<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+				<span class="flash-message">{{ message }}</span>
+				<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		{% endfor %}
+
+		{% endif %}
+		{% endwith %}
+    </div>
 	<div class = "login">
 		<form action="/login_misconfig" method="POST">
 			<div class="form-group">
 				<label for="UsernameInput">Username</label>
 				<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
-			</div>	
+			</div>
 			<div class="form-group">
 				<label for="PasswordInput">Password </label>
 				<input type="password" id="PasswordInput" placeholder="Password" name="password">
@@ -40,8 +57,15 @@
 		</form>
 		</div>
 		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
-	</div>	
-</div>	
-</div>		
-<script type="text/javascript" src="{{url_for('static', filename='script/login_misconfig.js')}}"></script>		
+	</div>
+	
+	{% autoescape false %}
+	{% for entry in log %}
+	    <script>console.log("{{ entry }}");</script>
+	{% endfor %}
+	{% endautoescape %}
+
+</div>
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='script/login_misconfig.js')}}"></script>
 {% endblock %}
