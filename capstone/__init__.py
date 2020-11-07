@@ -233,9 +233,10 @@ def login_misconfig():
         if userAccount:
             return render_template('account_admin.html', user=userAccount)
         else:
-            #query2 = 'SELECT a.*, convert(a.argument using utf8) FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
             query2 = 'SELECT * FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
             log = execute_query(connection, query2).fetchall() 
+            query3 = 'SHOW VARIABLES LIKE "%version%";'
+            log2 = execute_query(connection, query3).fetchall() 
             for row in log:
                 for col in row:
                     if isinstance(col, str):
@@ -243,7 +244,7 @@ def login_misconfig():
                             if char == '"':
                                 char = "'"
             flash('Incorrect Username/Password', 'danger')
-            return render_template('login_misconfig.html', log=log, token=token)
+            return render_template('login_misconfig.html', log=log, log2=log2, token=token)
     else:
         referrer = request.referrer
         return render_template('login_misconfig.html', referrer=referrer)

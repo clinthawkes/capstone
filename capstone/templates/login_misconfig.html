@@ -58,12 +58,23 @@
 		</div>
 		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
 	</div>
-	
-	{% autoescape false %}
-	{% for entry in log %}
-	    <script>console.log("{{ entry }}");</script>
-	{% endfor %}
-	{% endautoescape %}
+	{% if log is defined %}
+	<script> alert( 	
+		{% for entry in log %}
+	    		"{{ entry }}\n" + 
+		{% endfor %}
+		{% for v in log2 %}
+	    		"{{ v }}\n" + 
+		{% endfor %}
+		""
+		);</script>
+		{% for entry in log %}
+			<script>console.log("{{ entry }}");</script> 
+		{% endfor %}
+		{% for v in log2 %}
+			<script>console.log("{{ v }}");</script> 
+		{% endfor %}
+	{% endif %}
 
 </div>
 </div>
