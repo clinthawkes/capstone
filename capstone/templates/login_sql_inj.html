@@ -15,7 +15,7 @@
 	<div class = "container">
 		<div class="alert alert-danger">
 			&#9888;
-			<i><strong>Warning!</strong> Vulnerability for SQL Injection <strong>on!</strong> Click <a href = "{{ url_for('login') }}">here</a> to switch off</i>
+			<i><strong>Warning!</strong> Vulnerability for SQL Injection <strong>on!</strong> Click <a href = "/login?attackToken=1">here</a> to switch off</i>
 		</div>
 		<br>
 		<h2>User Login</h2>
@@ -31,11 +31,12 @@
 				<div class="form-group">
 					<label for="PasswordInput">Password </label>
 					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+					<input type="hidden" id="attackToken" name="attackToken" value="1">
 				</div>
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
 		</div>
-		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
+		<h6>Don't have an account? <a href = "/register?attackToken=1">Create Account</a></h6>
 	</div>	
 </div>	
 </div>

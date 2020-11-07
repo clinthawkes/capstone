@@ -20,6 +20,21 @@
 			</div>
 			<h2>Register</h2>
 			<br>
+			<div class="container mt-3">
+				{% with messages = get_flashed_messages(with_categories=true) %}
+				{% if messages %}
+					{% for category, message in messages %}
+							<!-- Success Alert -->
+						<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+							<span class="flash-message">{{ message }}</span>
+							<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					{% endfor %}
+				{% endif %}
+				{% endwith %}
+			</div>
 			<form action="/register" method="POST">
 				<div class="form-group">
 					<label for="CreateUsernameInput">Create Username</label>
@@ -32,11 +47,13 @@
 				<div class="form-group">
 					<label for="CreatePasswordInput2">Re-Enter Password*</label>
 					<input type="password" id="CreatePasswordInput2" placeholder="Re-Enter Password" name="createPassword2">
+					<input type="hidden" id="attackToken" name="attackToken" value="{{ attackToken }}">
+					<input type="hidden" id="referrer" name="referrer" value="{{ referrer }}">
 				</div>
 				<button type="submit" class="btn btn-primary">Register</button>
 			</form>
 			<h6>Already have an account?</h6>
-			<a href = "{{ url_for('login') }}">Login</a>
+			<a href = "{{ referrer }}?attackToken={{ attackToken }}">Login</a>
 		</div>
 	</div>	
 </div>

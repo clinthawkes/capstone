@@ -9,7 +9,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/sql_inj.pdf';
 	    document.getElementById("download").download = 'SQL_Injection_Writeup.pdf';
-	    document.getElementById("login").href = '/login_sql_inj';
+	    document.getElementById("login").href = '/login_sql_inj?attackToken=1';
         } else if (target == '2') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
@@ -18,7 +18,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/XSS.pdf';
 	    document.getElementById("download").download = 'XSS_Writeup.pdf';
-	    document.getElementById("login").href = '/login_xss';
+	    document.getElementById("login").href = '/login_xss?attackToken=2';
         } else if (target == '3') {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
@@ -27,7 +27,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/security_misconfig.pdf';
 	    document.getElementById("download").download = 'Security_Misconfig_Writeup.pdf';
-	    document.getElementById("login").href = '/login_misconfig';
+	    document.getElementById("login").href = '/login_misconfig?attackToken=3';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
