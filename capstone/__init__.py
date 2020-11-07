@@ -64,16 +64,20 @@ def register():
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
-        referrer = referrer.split('/')
-        referrer = referrer[len(referrer) - 1]
-        return render_template('/' + referrer + '.html', attackToken=token)
+        if referrer:
+            referrer = referrer.split('/')
+            referrer = referrer[len(referrer) - 1]
+            return render_template('/' + referrer + '.html', attackToken=token)
+        return render_template('login.html', attackToken=0)
     else:
         token = request.args.get('attackToken')
         referrer = request.referrer
-        if '?' in referrer:
-            referrer = referrer.split('?', 2)
-            referrer = referrer[0]
-        return render_template('register.html', referrer=referrer, attackToken=token)
+        if referrer:
+            if '?' in referrer:
+                referrer = referrer.split('?', 2)
+                referrer = referrer[0]
+            return render_template('register.html', referrer=referrer, attackToken=token)
+        return render_template('register.html', referrer='/login')
 
 
 # login checks username and password against stored usernames and passwords in the database -
