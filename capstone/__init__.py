@@ -64,7 +64,9 @@ def register():
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
-        return render_template(referrer, attackToken=token)
+        referrer = referrer.split('/')
+        referrer = referrer[len(referrer) - 1]
+        return render_template('/' + referrer + '.html', attackToken=token)
     else:
         token = request.args.get('attackToken')
         referrer = request.referrer

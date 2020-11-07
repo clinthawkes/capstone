@@ -22,6 +22,21 @@
 		<br>
 		<button id="sql1" class="btn btn-danger">Login as User Without a Password</button>  <button id="sql2" class="btn btn-danger">Retrieve Contents of User Database</button>
 		<br>
+		<div class="container mt-3">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+						<!-- Success Alert -->
+					<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+						<span class="flash-message">{{ message }}</span>
+						<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+		</div>
 		<div class = "login">
 			<form action="/login_sql_inj" method="POST">
 				<div class="form-group">
