@@ -34,28 +34,28 @@ def register():
         #check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
         if (check_name):
             flash('Username Not Available. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         # check password requirements are met
         specialChar = ['$', '@', '#', '%', '!', '^', '&', '*', '(' ')']
         if not any(char in specialChar for char in password1):
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.islower() for char in password1):
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.isupper() for char in password1):
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.isdigit() for char in password1):
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if len(password1) < 8:
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         # if passwords don't match return error page 3
         if (password1 != password2):
             flash('Passwords Do Not Match. Please Try Again!', 'danger')
-            return render_template('register.html', attackToken=token)
+            return render_template('register.html', attackToken=token, referrer=referrer)
         query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
         data = (username, password1, bankBalance)
         db_connection = connect_to_database()
