@@ -16,7 +16,7 @@
 	<div class = "container">
 		<div class="alert alert-danger">
 			&#9888;
-			<i><strong>Warning!</strong> Vulnerability for XSS <strong>on!</strong> Click <a href = "{{ url_for('login') }}">here</a> to switch off</i>
+			<i><strong>Warning!</strong> Vulnerability for XSS <strong>on!</strong> Click <a href = "/login?attackToken=2">here</a> to switch off</i>
 		</div>
 		<br>
 		<h2>User Login</h2>
@@ -25,6 +25,21 @@
 		<button id="xss2" class="btn btn-danger" onclick = 'window.open("{{ url_for("phishing") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
 		<button id="xss3" class="btn btn-danger">Test Stored XSS</button>
 		<br>
+		<div class="container mt-3">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+						<!-- Success Alert -->
+					<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+						<span class="flash-message">{{ message }}</span>
+						<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+		</div>
 		<div class = "login">
 			<form action="/login_xss" method="GET">
 				<div class="form-group">
@@ -38,7 +53,7 @@
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
 		</div>
-		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
+		<h6>Don't have an account? <a href = "/register?attackToken=2">Create Account</a></h6>
 	</div>	
 </div>	
 </div>

@@ -15,13 +15,28 @@
 	<div class = "container">
 		<div class="alert alert-danger">
 			&#9888;
-			<i><strong>Warning!</strong> Vulnerability for SQL Injection <strong>on!</strong> Click <a href = "{{ url_for('login') }}">here</a> to switch off</i>
+			<i><strong>Warning!</strong> Vulnerability for SQL Injection <strong>on!</strong> Click <a href = "/login?attackToken=1">here</a> to switch off</i>
 		</div>
 		<br>
 		<h2>User Login</h2>
 		<br>
 		<button id="sql1" class="btn btn-danger">Login as User Without a Password</button>  <button id="sql2" class="btn btn-danger">Retrieve Contents of User Database</button>
 		<br>
+		<div class="container mt-3">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+						<!-- Success Alert -->
+					<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+						<span class="flash-message">{{ message }}</span>
+						<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+		</div>
 		<div class = "login">
 			<form action="/login_sql_inj" method="POST">
 				<div class="form-group">
@@ -31,11 +46,12 @@
 				<div class="form-group">
 					<label for="PasswordInput">Password </label>
 					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+					<input type="hidden" id="attackToken" name="attackToken" value="1">
 				</div>
 				<button type="submit" class="btn btn-primary">Login</button>
 			</form>
 		</div>
-		<h6>Don't have an account? <a href = "{{ url_for('register') }}">Create Account</a></h6>
+		<h6>Don't have an account? <a href = "/register?attackToken=1">Create Account</a></h6>
 	</div>	
 </div>	
 </div>

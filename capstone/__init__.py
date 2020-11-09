@@ -21,6 +21,8 @@ def register():
         username = request.form['createUsername']
         password1 = request.form['createPassword1']
         password2 = request.form['createPassword2']
+        token = request.form['attackToken']
+        referrer = request.form['referrer']
         # generate a random bank balance between $10 - $1,000,000
         bankBalance = random.randint(10, 1000000)
         # check username is unique
@@ -31,22 +33,29 @@ def register():
         #cursor = mysql.connection.cursor()
         #check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
         if (check_name):
-            return render_template('register_error1.html')
+            flash('Username Not Available. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         # check password requirements are met
         specialChar = ['$', '@', '#', '%', '!', '^', '&', '*', '(' ')']
         if not any(char in specialChar for char in password1):
-            return render_template('register_error2.html')
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.islower() for char in password1):
-            return render_template('register_error2.html')
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.isupper() for char in password1):
-            return render_template('register_error2.html')
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if not any(char.isdigit() for char in password1):
-            return render_template('register_error2.html')
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         if len(password1) < 8:
-            return render_template('register_error2.html')
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         # if passwords don't match return error page 3
         if (password1 != password2):
-            return render_template('register_error3.html')
+            flash('Passwords Do Not Match. Please Try Again!', 'danger')
+            return render_template('register.html', attackToken=token, referrer=referrer)
         query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
         data = (username, password1, bankBalance)
         db_connection = connect_to_database()
@@ -54,9 +63,21 @@ def register():
         db_connection.commit()
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
-        return render_template('login_new.html')
+        flash('Registration Successful! Please Login Below', 'success') 
+        if referrer:
+            referrer = referrer.split('/')
+            referrer = referrer[len(referrer) - 1]
+            return render_template('/' + referrer + '.html', attackToken=token)
+        return render_template('login.html', attackToken=0)
     else:
-        return render_template('register.html')
+        token = request.args.get('attackToken')
+        referrer = request.referrer
+        if referrer:
+            if '?' in referrer:
+                referrer = referrer.split('?', 2)
+                referrer = referrer[0]
+            return render_template('register.html', referrer=referrer, attackToken=token)
+        return render_template('register.html', referrer='/login')
 
 
 # login checks username and password against stored usernames and passwords in the database -
@@ -80,10 +101,11 @@ def login():
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:
-            return render_template('login_error.html', token=token)
+            flash('Incorrect Username/Password', 'danger')
+            return render_template('login.html', attackToken=token)
     else:
-        referrer = request.referrer
-        return render_template('login.html', referrer=referrer)
+        token = request.args.get('attackToken')
+        return render_template('login.html', attackToken=token)
 
 
 # allows user to log out from their session
@@ -151,6 +173,7 @@ def login_sql_inj():
             # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:
+            flash('Incorrect Username/Password', 'danger')
             return render_template('login_sql_inj.html')
     else:
         return render_template('login_sql_inj.html')
@@ -223,7 +246,6 @@ def login_misconfig():
     if request.method == 'POST':
         user = request.form['username']
         password = request.form['password']
-        token = request.form['attackToken']
         # check if user account exists
         connection = connect_to_database()
         query = 'SELECT * FROM default_accounts WHERE user = %s AND password = %s'
@@ -233,9 +255,10 @@ def login_misconfig():
         if userAccount:
             return render_template('account_admin.html', user=userAccount)
         else:
-            #query2 = 'SELECT a.*, convert(a.argument using utf8) FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
             query2 = 'SELECT * FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
             log = execute_query(connection, query2).fetchall() 
+            query3 = 'SHOW VARIABLES LIKE "%version%";'
+            log2 = execute_query(connection, query3).fetchall() 
             for row in log:
                 for col in row:
                     if isinstance(col, str):
@@ -243,10 +266,9 @@ def login_misconfig():
                             if char == '"':
                                 char = "'"
             flash('Incorrect Username/Password', 'danger')
-            return render_template('login_misconfig.html', log=log, token=token)
+            return render_template('login_misconfig.html', log=log, log2=log2)
     else:
-        referrer = request.referrer
-        return render_template('login_misconfig.html', referrer=referrer)
+        return render_template('login_misconfig.html')
 
 
 
