@@ -65,18 +65,25 @@ def register():
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
         if referrer:
+            #manipulates text so the page viewed before going to the registration page is where
+            #the user is directed after they have successfully created a new user
             referrer = referrer.split('/')
             referrer = referrer[len(referrer) - 1]
             return render_template('/' + referrer + '.html', attackToken=token)
+        #this is only rendered if the user went to the registration page directly
+        #e.g. typed faultyvault.com/register in the address bar of the browser
         return render_template('login.html', attackToken=0)
     else:
         token = request.args.get('attackToken')
         referrer = request.referrer
         if referrer:
+            #removes any query data from the referring url
             if '?' in referrer:
                 referrer = referrer.split('?', 2)
                 referrer = referrer[0]
             return render_template('register.html', referrer=referrer, attackToken=token)
+        #this is only rendered if the user went to the registration page directly
+        #e.g. typed faultyvault.com/register in the address bar of the browser
         return render_template('register.html', referrer='/login')
 
 
@@ -255,10 +262,12 @@ def login_misconfig():
         if userAccount:
             return render_template('account_admin.html', user=userAccount)
         else:
+            #this retrieves the log data for the error message
             query2 = 'SELECT * FROM mysql.general_log a ORDER BY event_time desc LIMIT 6;'
             log = execute_query(connection, query2).fetchall() 
             query3 = 'SHOW VARIABLES LIKE "%version%";'
             log2 = execute_query(connection, query3).fetchall() 
+            #these next statements format the error message so it is displayed properly
             for row in log:
                 for col in row:
                     if isinstance(col, str):
