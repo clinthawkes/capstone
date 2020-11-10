@@ -30,8 +30,6 @@ def register():
         data1 = (username, )
         db_connection = connect_to_database()
         check_name = execute_query(db_connection, query1, data1).fetchall()
-        #cursor = mysql.connection.cursor()
-        #check_name = cursor.execute('SELECT (username,) FROM `accounts` WHERE `user` = %s')
         if (check_name):
             flash('Username Not Available. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
@@ -100,12 +98,8 @@ def login():
         query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
         data = (user, password)
         userAccount = execute_query(connection, query, data).fetchall()
-        # if user account exists create session data which can be accessed in other routes
+        # if user account exists load account page
         if userAccount:
-            #session['loggedin'] = True
-            #session['id'] = account['id']
-            #session['user'] = account['user']
-            # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:
             flash('Incorrect Username/Password', 'danger')
@@ -120,8 +114,9 @@ def login():
 def logout():
    # Remove session data and log user out of their account
    session.pop('loggedin', None)
-   session.pop('id', None)
-   session.pop('user', None)
+   session.pop('username', None)
+   session.pop('password', None)
+   session.pop('data', None)
    # Redirect to main page
    return redirect(url_for('index'))
 
@@ -171,13 +166,8 @@ def login_sql_inj():
         query = "SELECT * FROM `accounts` WHERE `user` = '" + user + "' AND `password` = '" + password + "' ";
         cursor.execute(query)
         userAccount = cursor.fetchall()
-        #db_connection.commit()
-        # if user account exists create session data which can be accessed in other routes
+        # if user account exists load account page
         if userAccount:
-            #session['loggedin'] = True
-            #session['id'] = account['id']
-            #session['user'] = account['user']
-            # redirect to their account details page
             return render_template('account.html', user=userAccount)
         else:
             flash('Incorrect Username/Password', 'danger')
@@ -258,7 +248,7 @@ def login_misconfig():
         query = 'SELECT * FROM default_accounts WHERE user = %s AND password = %s'
         data = (user, password)
         userAccount = execute_query(connection, query, data).fetchall()
-        # if user account exists create session data which can be accessed in other routes
+        # if user account exists return account page
         if userAccount:
             return render_template('account_admin.html', user=userAccount)
         else:
@@ -278,6 +268,52 @@ def login_misconfig():
             return render_template('login_misconfig.html', log=log, log2=log2)
     else:
         return render_template('login_misconfig.html')
+
+##################################################################
+#####          VULNERABILTY 4: BROKEN AUTHENTICATION        ######
+##################################################################
+
+# set a weak secret key
+app.secret_key = "secretkey";
+
+
+@app.route('/login_sessions', methods = ['POST', 'GET'])
+def login_sessions():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        connection = connect_to_database()
+        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        data = (user, password)
+        userAccount = execute_query(connection, query, data).fetchall()
+        # if user account exists create session data which can be accessed in other routes
+        if userAccount:
+            #user = account[username]
+            session['loggedin'] = True
+            session['username'] = user
+            session['password'] = password
+            session['data'] = userAccount
+            return render_template('account_sessions.html', user=userAccount)
+        # if error in login
+        else:
+            flash('Incorrect Username/Password', 'danger')
+            return render_template('login_sessions.html')
+    else:
+        return render_template('login_sessions.html')
+
+
+    
+@app.route('/account_sessions/<user>', methods=['GET'])
+def account_sessions(user): 
+    # if a user is already logged in with a current session
+    if not session.get('username') is None:    
+        user = session.get('data')
+        #user = account[username]
+        return render_template('account_sessions.html', user = user)
+    # if not logged in redirect to login page
+    else:
+        flash('You are not logged in', 'danger')
+        return render_template('login_sessions.html')
 
 
 
