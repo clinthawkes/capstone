@@ -37,6 +37,10 @@ window.addEventListener("load",function() {
 		document.getElementById("misconfig2").addEventListener("click", function(){
 			document.getElementById('UsernameInput').value = "fakeUsername";
 		});
+	} else if (path == "4"){
+		document.getElementById('vulnerability').innerHTML = "Broken Authentication";
+		document.getElementById('switchOn').href = "/login_sessions";
+		document.getElementById("attackToken").value = "4";
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}
