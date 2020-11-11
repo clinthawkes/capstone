@@ -276,11 +276,12 @@ def login_misconfig():
 # set a weak secret key
 app.secret_key = "secretkey";
 
+# loads python interpreter page
 @app.route('/cookie_decoder')
 def cookie_decoder():
     return render_template('cookie_decoder.html')
 
-
+# login route which sets up a user session upon successful login
 @app.route('/login_sessions', methods = ['POST', 'GET'])
 def login_sessions():
     if request.method == 'POST':
@@ -292,7 +293,6 @@ def login_sessions():
         userAccount = execute_query(connection, query, data).fetchall()
         # if user account exists create session data which can be accessed in other routes
         if userAccount:
-            #user = account[username]
             session['loggedin'] = True
             session['username'] = user
             session['password'] = password
@@ -306,22 +306,23 @@ def login_sessions():
         return render_template('login_sessions.html')
 
 
-    
+# displays user's account page if they have a current session    
 @app.route('/account_sessions/<user>', methods=['GET'])
 def account_sessions(user): 
     # if a user is already logged in with a current session
     if not session.get('username') is None:    
         user = session.get('data')
-        #user = account[username]
         return render_template('account_sessions.html', user = user)
-        
-        #response = session.get('http://192.168.1.110/')
-        response = session.get('faultyvault.com')
-        print(session.cookies.get_dict())
     # if not logged in redirect to login page
     else:
         flash('You are not logged in', 'danger')
         return render_template('login_sessions.html')
+
+# ineffective log out route which does not remove session data
+@app.route('/logout_sessions',  methods = ['POST'])
+def logout_sessions():
+   # Redirect to login_sessions page
+   return redirect(url_for('login_sessions'))
 
 
 

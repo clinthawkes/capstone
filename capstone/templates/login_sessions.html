@@ -22,6 +22,8 @@
 	<br>
 	<h2>User Login</h2>
 	<br>
+	<button id="sessions1" class="btn btn-danger">Create User Session Cookie</button>
+	<button id="sessions2" class="btn btn-danger" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
 	<br>
 	<div class="container mt-3">
 		{% with messages = get_flashed_messages(with_categories=true) %}
