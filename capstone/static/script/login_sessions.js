@@ -1,8 +1,4 @@
-document.getElementById("session1").addEventListener("click", function(){
-	document.getElementById('UsernameInput').value = "to complete";
-});
-
-
-document.getElementById("session2").addEventListener("click", function(){
-	document.getElementById('UsernameInput').value = "to complete";
+document.getElementById("sessions1").addEventListener("click", function(){
+	document.getElementById('UsernameInput').value = "scottm";
+	document.getElementById('PasswordInput').value = "DundlerMifflin123!";
 });
