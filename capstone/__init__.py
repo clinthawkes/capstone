@@ -276,6 +276,10 @@ def login_misconfig():
 # set a weak secret key
 app.secret_key = "secretkey";
 
+@app.route('/cookie_decoder')
+def cookie_decoder():
+    return render_template('cookie_decoder.html')
+
 
 @app.route('/login_sessions', methods = ['POST', 'GET'])
 def login_sessions():
@@ -310,6 +314,10 @@ def account_sessions(user):
         user = session.get('data')
         #user = account[username]
         return render_template('account_sessions.html', user = user)
+        
+        #response = session.get('http://192.168.1.110/')
+        response = session.get('faultyvault.com')
+        print(session.cookies.get_dict())
     # if not logged in redirect to login page
     else:
         flash('You are not logged in', 'danger')
