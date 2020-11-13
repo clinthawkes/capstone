@@ -37,6 +37,10 @@
 		<button id="misconfig1" class="btn btn-info">Login with Default Credentials</button>
 		<button id="misconfig2" class="btn btn-info">Display Detailed Error Message</button>
 	</div>
+	<div id="sessionsButtons" style="display:none">
+		<button id="sessions1" class="btn btn-info">Create User Session Cookie</button>
+		<button id="sessions2" class="btn btn-info" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
+	</div>
 	<div class="container mt-3">
 		{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}

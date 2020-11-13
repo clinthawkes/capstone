@@ -40,7 +40,12 @@ window.addEventListener("load",function() {
 	} else if (path == "4"){
 		document.getElementById('vulnerability').innerHTML = "Broken Authentication";
 		document.getElementById('switchOn').href = "/login_sessions";
+		document.getElementById("sessionsButtons").style.display = '';
 		document.getElementById("attackToken").value = "4";
+		document.getElementById("sessions1").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "scottm";
+			document.getElementById('PasswordInput').value = "DundlerMifflin123!";
+		});
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}
