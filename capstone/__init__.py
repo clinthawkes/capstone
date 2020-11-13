@@ -3,12 +3,19 @@ import string
 import random
 import mysql.connector
 import re
+from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
+recaptcha = ReCaptcha(app=app)
+app.config['RECAPTCHA_SITE_KEY'] = '6LeuC-IZAAAAAPM_WuD2YkPp5iN5aagaWNcX-NfD'
+app.config['RECAPTCHA_SECRET_KEY'] = '6LeuC-IZAAAAAD0y8l_-XoV81H3RbfxG0a4a6ndX'
+app.config['RECAPTCHA_ENABLED'] = True
 
+recaptcha = ReCaptcha()
+recaptcha.init_app(app)
 
 @app.route('/')
 def index():
@@ -93,16 +100,20 @@ def login():
         user = request.form['username']
         password = request.form['password']
         token = request.form['attackToken']
-        # check if user account exists
-        connection = connect_to_database()
-        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
-        data = (user, password)
-        userAccount = execute_query(connection, query, data).fetchall()
-        # if user account exists load account page
-        if userAccount:
-            return render_template('account.html', user=userAccount)
+        if recaptcha.verify():
+            # check if user account exists
+            connection = connect_to_database()
+            query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+            data = (user, password)
+            userAccount = execute_query(connection, query, data).fetchall()
+            # if user account exists load account page
+            if userAccount:
+                return render_template('account.html', user=userAccount)
+            else:
+                flash('Incorrect Username/Password', 'danger')
+                return render_template('login.html', attackToken=token)
         else:
-            flash('Incorrect Username/Password', 'danger')
+            flash('Error with ReCaptcha. Please verify you are not a robot.', 'danger')
             return render_template('login.html', attackToken=token)
     else:
         token = request.args.get('attackToken')
