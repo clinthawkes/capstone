@@ -59,12 +59,18 @@ btn.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
+  document.getElementById("msg").innerHTML = "";
   modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
+	document.getElementById("msg").innerHTML = "";  
     modal.style.display = "none";
   }
 }
+
+document.getElementById("ResetPasswordButton").addEventListener("click", function(){
+	document.getElementById("msg").innerHTML = "Password Reset Link Sent!";
+});
