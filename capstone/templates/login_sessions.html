@@ -53,11 +53,39 @@
 				<input type="password" id="PasswordInput" placeholder="Password" name="password">
 				<input type="hidden" id="attackToken" name="attackToken" value="4">
 			</div>
-			<button id="LoginButton" type="submit" class="btn btn-primary">Login</button>
-		</form>
-		</div>
-		<h6>Don't have an account? <a href = "/register?attackToken=4">Create Account</a></h6>
 	</div>
+	<br>
+	<button id="LoginButton" type="submit" class="btn btn-primary">Login</button>
+	</form>
+	</div>
+	<br>
+	<button id = "passwordbtn" class ="btn btn-secondary"> Forgot Your Password? </button>
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h3>Reset Your Password</h3>
+			<br>
+			<form action="/change_password" method="POST">
+				<div class="form-group">
+					<label for="UsernameInput">Username</label>
+					<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
+				</div>
+				<div class="form-group">
+					<label for="PasswordInput">New Password </label>
+					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+					<input type="hidden" id="attackToken" name="attackToken" value="4">
+					<label for="PasswordInput">Re-Enter New Password </label>
+					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+					<input type="hidden" id="attackToken" name="attackToken" value="4">
+				</div>
+				<button id="ResetPasswordButton" type="submit" class="btn btn-secondary">Change Password</button>
+				<br>
+			</form>	
+		</div>
+	</div>
+	<br>
+	<br>
+	<h6>Don't have an account? <a href = "/register?attackToken=4">Create Account</a></h6>
 	{% if log is defined %}
 	<script> alert( 	
 		{% for entry in log %}
