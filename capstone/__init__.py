@@ -57,7 +57,7 @@ def register():
         if len(password1) < 8:
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
-        # if passwords don't match return error page 3
+        # if passwords don't match return error message
         if (password1 != password2):
             flash('Passwords Do Not Match. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
@@ -120,7 +120,7 @@ def login():
         return render_template('login.html', attackToken=token)
 
 
-# allows user to log out from their session
+# allows user to log out from their account
 @app.route('/logout',  methods = ['POST'])
 def logout():
    # Remove session data and log user out of their account
@@ -335,6 +335,51 @@ def logout_sessions():
    # Redirect to login_sessions page
    return redirect(url_for('login_sessions'))
 
+# weak password recovery feature on login_sessions page
+@app.route('/change_password', methods = ['POST', 'GET'])
+def change_password(): 
+    if request.method == 'POST':
+        username = request.form['username']
+        password1 = request.form['password1']
+        password2 = request.form['password2']
+        # before connecting to database, check if passwords match
+        if (password1 != password2):
+            flash('Unable to Change Password: Passwords Do Not Match!', 'danger')
+            return render_template('login_sessions.html')
+        # check if user exists
+        query0 = 'SELECT user FROM accounts WHERE user = %s'
+        data0 = (username, )
+        connection = connect_to_database()
+        check_name = execute_query(connection, query0, data0).fetchall()
+        if not(check_name):
+            flash('Username Does Not Exist', 'danger')
+            return render_template('login_sessions.html')
+        # check password requirements are met
+        specialChar = ['$', '@', '#', '%', '!', '^', '&', '*', '(' ')']
+        if not any(char in specialChar for char in password1):
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('login_sessions.html')
+        if not any(char.islower() for char in password1):
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('login_sessions.html')
+        if not any(char.isupper() for char in password1):
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('login_sessions.html')
+        if not any(char.isdigit() for char in password1):
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('login_sessions.html')
+        if len(password1) < 8:
+            flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
+            return render_template('login_sessions.html')
+        # if password requirements are met, update the database with the new password
+        query1 = 'UPDATE accounts SET password = %s WHERE user = %s'
+        data1 = (password1, username)
+        connection = connect_to_database()
+        getUser = execute_query(connection, query1, data1).fetchone()
+        connection.commit()
+        flash('Password Changed!', 'success')
+        return render_template('login_sessions.html')
+     
 
 
 if __name__ == "__main__":
