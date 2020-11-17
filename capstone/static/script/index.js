@@ -36,8 +36,8 @@ window.addEventListener("load",function() {
             document.getElementById("5text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
-	    document.getElementById("download").href = '/static/files/.pdf';
-	    document.getElementById("download").download = '.pdf';
+	    document.getElementById("download").href = '/static/files/broken_authentication.pdf';
+	    document.getElementById("download").download = 'Broken_Authentication.pdf';
 	    document.getElementById("login").href = '/login_sessions?attackToken=4';
         } else if (target == '5') {
             document.getElementById("1text").style.display = 'none';
