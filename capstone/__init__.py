@@ -346,14 +346,18 @@ def change_password():
         if (password1 != password2):
             flash('Unable to Change Password: Passwords Do Not Match!', 'danger')
             return render_template('login_sessions.html')
-        # check if user exists
+        # check that user is not part of the website demo, if so do not change password 
+        if (username == 'scottm') or (username == 'gatesb') or (username == 'admin') or (username == 'hibberts') or (username == 'fakeUsername'):
+            flash('This User Password Cannot Be Changed', 'danger')
+            return render_template('login_sessions.html')    
+        # check if user exists in database
         query0 = 'SELECT user FROM accounts WHERE user = %s'
         data0 = (username, )
         connection = connect_to_database()
         check_name = execute_query(connection, query0, data0).fetchall()
         if not(check_name):
             flash('Username Does Not Exist', 'danger')
-            return render_template('login_sessions.html')
+            return render_template('login_sessions.html')    
         # check password requirements are met
         specialChar = ['$', '@', '#', '%', '!', '^', '&', '*', '(' ')']
         if not any(char in specialChar for char in password1):
