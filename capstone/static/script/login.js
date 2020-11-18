@@ -57,6 +57,9 @@ window.addEventListener("load",function() {
 		document.getElementById("sde2").addEventListener("click", function(){
 			document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, encrypted_password FROM accounts_sha256;#";
 		});
+		document.getElementById("sde3").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, password FROM accounts;#";
+		});
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}
