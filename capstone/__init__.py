@@ -388,6 +388,25 @@ def change_password():
 #####         VULNERABILTY 5: SENSITIVE DATA EXPOSURE       ######
 ##################################################################
 
+# using string concatenation instead of parameterized queries to access
+# a single user's account or dump the contents of the database
+@app.route('/login_exposure', methods = ['GET', 'POST'])
+def login_exposure():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        # check if user account exists
+        db_connection = connect_to_database()
+        query = "SELECT * FROM `accounts` WHERE `user` = '" + user + "' AND `password` = '" + password + "' ";
+        userAccount = execute_query(db_connection, query).fetchall()
+        # if user account exists load account page
+        if userAccount:
+            return render_template('account.html', user=userAccount)
+        else:
+            flash('Incorrect Username/Password', 'danger')
+            return render_template('login_exposure.html')
+    else:
+        return render_template('login_exposure.html')
 """
 @app.route('/copy_over')
 def copy():
