@@ -41,6 +41,11 @@
 		<button id="sessions1" class="btn btn-info">Create User Session Cookie</button>
 		<button id="sessions2" class="btn btn-info" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
 	</div>
+	<div id="exposureButtons" style="display:none">
+		<button id="sde1" class="btn btn-info">Dump MD5 Encrypted DB</button>  <button id="sde2" class="btn btn-info">Dump SHA-256 Encrypted DB</button>
+		<button id="sde3" class="btn btn-info">Dump Unencrypted DB</button>
+
+	</div>
 	<div class="container mt-3">
 		{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}

@@ -49,7 +49,7 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/.pdf';
 	    document.getElementById("download").download = '.pdf';
-	    document.getElementById("login").href = '/login';
+	    document.getElementById("login").href = '/login_exposure';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';

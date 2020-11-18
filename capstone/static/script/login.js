@@ -46,6 +46,20 @@ window.addEventListener("load",function() {
 			document.getElementById('UsernameInput').value = "scottm";
 			document.getElementById('PasswordInput').value = "DundlerMifflin123!";
 		});
+	} else if (path == "5"){
+		document.getElementById('vulnerability').innerHTML = "Sensitive Data Exposure";
+		document.getElementById('switchOn').href = "/login_exposure";
+		document.getElementById("attackToken").value = "5";
+		document.getElementById("exposureButtons").style.display = '';
+		document.getElementById("sde1").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, encrypted_password FROM accounts_md5;#";
+		});
+		document.getElementById("sde2").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, encrypted_password FROM accounts_sha256;#";
+		});
+		document.getElementById("sde3").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, password FROM accounts;#";
+		});
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}
