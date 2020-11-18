@@ -3,6 +3,7 @@ import string
 import random
 import mysql.connector
 import re
+import hashlib
 from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
@@ -404,6 +405,48 @@ def change_password():
         flash('Password Changed!', 'success')
         return render_template('login_sessions.html')
      
+     
+##################################################################
+#####         VULNERABILTY 5: SENSITIVE DATA EXPOSURE       ######
+##################################################################
+
+# hashes a password with the compromised MD5 algorithm
+@app.route('/encrypt_md5')
+def encrypt_md5():
+    query = 'SELECT * FROM accounts_md5'
+    db_connection = connect_to_database()
+    table_rows = execute_query(db_connection, query).fetchall()
+    for row in table_rows:
+        user = row[1]
+        password0 = row[2]
+        password = str.encode(password0)                        # convert string to bytes
+        encrypted_password0 = hashlib.md5(password)             # returns md5 hash
+        encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format
+        query1 = 'UPDATE accounts_md5 SET encrypted_password = %s WHERE user = %s'
+        data = (str(encrypted_password), user)                  # convert hexadecimal to a string
+        execute_query(db_connection, query1, data)
+        db_connection.commit()
+    return "Password encrypted with MD5"
+
+
+# hashes a password with the secure SHA-256 algorithm
+@app.route('/encrypt_sha256')
+def encrypt_sha256():
+    query = 'SELECT * FROM accounts_sha256'
+    db_connection = connect_to_database()
+    table_rows = execute_query(db_connection, query).fetchall()
+    for row in table_rows:
+        user = row[1]
+        password0 = row[2]
+        password = str.encode(password0)                        # convert string to bytes
+        encrypted_password0 = hashlib.sha256(password)          # returns sha-256 hash
+        encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format
+        query1 = 'UPDATE accounts_sha256 SET encrypted_password = %s WHERE user = %s'
+        data = (str(encrypted_password), user)                  # convert hexadecimal to a string
+        execute_query(db_connection, query1, data)
+        db_connection.commit()
+    return "Password encrypted with SHA-256"
+
 
 
 if __name__ == "__main__":
