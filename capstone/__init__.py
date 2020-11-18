@@ -17,6 +17,26 @@ app.config['RECAPTCHA_ENABLED'] = True
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
+'''
+@app.route('/copy_over')
+def copy():
+    query = 'SELECT * FROM accounts'
+    db_connection = connect_to_database()
+    records = execute_query(db_connection, query).fetchall()
+    for row in records:
+        user = row[1]
+        password = row[2]
+        balance = row[3]
+        query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        data = (user, password, balance)
+        execute_query(db_connection, query2, data)
+        db_connection.commit()
+        query3 = 'INSERT INTO accounts_sha256 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        execute_query(db_connection, query3, data)
+        db_connection.commit()
+    return "Process Complete"
+'''
+
 @app.route('/')
 def index():
     return render_template('index.html')
