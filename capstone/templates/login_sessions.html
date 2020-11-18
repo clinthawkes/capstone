@@ -24,11 +24,15 @@
 	<br>
 	<button id="sessions1" class="btn btn-danger">Create User Session Cookie</button>
 	<button id="sessions2" class="btn btn-danger" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
-	<button id="sessions3" class="btn btn-danger" onclick="open_in_new_window('html_contents', 'Credential Stuffing', 'location=0, status=0, scrollbars=1, resizeable=1, width=600, height=500');">Watch Credential Stuffing Attack</button>
+	<button id="sessions3" class="btn btn-danger" onclick="open_in_new_window('html_contents', 'Credential Stuffing', 'location=0, status=0, scrollbars=1, resizeable=1, width=600, height=600');">Watch Credential Stuffing Attack</button>
 	<div id="html_contents" data-new-window>
 		<video controls style="width: 100%; height: auto;">
 			<source src="/static/files/credStuffingVid.mp4" type="video/mp4">
 		</video>
+		<div class="container d-flex pt-3 justify-content-center">
+			<a class="btn btn-secondary w-25 mr-5" id="userList" href="/static/files/test.xlsx" download="test.xlsx">Download Credential List</a>
+			<a class="btn btn-secondary w-25" id="pythonFile" href="/static/files/credStuff.py" download="credStuff.py">Download Python Program</a>
+		</div>
 	</div>
 	<br>
 	<div class="container mt-3">
