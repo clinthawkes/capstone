@@ -6,7 +6,7 @@ import re
 import hashlib
 from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
-from capstone.db_connector import connect_to_database, execute_query
+from capstone.db_connector import connect_to_database, execute_query, add_user
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
@@ -18,25 +18,6 @@ app.config['RECAPTCHA_ENABLED'] = True
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
 
-'''
-@app.route('/copy_over')
-def copy():
-    query = 'SELECT * FROM accounts'
-    db_connection = connect_to_database()
-    records = execute_query(db_connection, query).fetchall()
-    for row in records:
-        user = row[1]
-        password = row[2]
-        balance = row[3]
-        query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
-        data = (user, password, balance)
-        execute_query(db_connection, query2, data)
-        db_connection.commit()
-        query3 = 'INSERT INTO accounts_sha256 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
-        execute_query(db_connection, query3, data)
-        db_connection.commit()
-    return "Process Complete"
-'''
 
 @app.route('/')
 def index():
@@ -82,11 +63,8 @@ def register():
         if (password1 != password2):
             flash('Passwords Do Not Match. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
-        query = 'INSERT INTO accounts (user, password, balance) VALUES (%s, %s, %s)'
-        data = (username, password1, bankBalance)
-        db_connection = connect_to_database()
-        execute_query(db_connection, query, data)
-        db_connection.commit()
+        #This will add the user to all the account tables in the DB
+        add_user(username, password1, bankBalance)
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
@@ -410,6 +388,25 @@ def change_password():
 #####         VULNERABILTY 5: SENSITIVE DATA EXPOSURE       ######
 ##################################################################
 
+"""
+@app.route('/copy_over')
+def copy():
+    query = 'SELECT * FROM accounts'
+    db_connection = connect_to_database()
+    records = execute_query(db_connection, query).fetchall()
+    for row in records:
+        user = row[1]
+        password = row[2]
+        balance = row[3]
+        query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        data = (user, password, balance)
+        execute_query(db_connection, query2, data)
+        db_connection.commit()
+        query3 = 'INSERT INTO accounts_sha256 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        execute_query(db_connection, query3, data)
+        db_connection.commit()
+    return "Process Complete"
+
 # hashes a password with the compromised MD5 algorithm
 @app.route('/encrypt_md5')
 def encrypt_md5():
@@ -428,7 +425,6 @@ def encrypt_md5():
         db_connection.commit()
     return "Password encrypted with MD5"
 
-
 # hashes a password with the secure SHA-256 algorithm
 @app.route('/encrypt_sha256')
 def encrypt_sha256():
@@ -446,7 +442,7 @@ def encrypt_sha256():
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with SHA-256"
-
+"""
 
 
 if __name__ == "__main__":
