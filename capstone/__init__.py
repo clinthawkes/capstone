@@ -412,6 +412,30 @@ def login_exposure():
     else:
         return render_template('login_exposure.html')
                 
+@app.route('/db_dump', methods=['GET'])
+def db_dump():
+    choice = request.args.get('db')
+    db_connection = connect_to_database()
+    if choice == '1':
+        query = "SELECT password FROM accounts_unencrypted"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='None', passwords=passwords)
+    elif choice == '2':
+        query = "SELECT encrypted_password FROM accounts_base64"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='base64', passwords=passwords)
+    elif choice == '3':
+        query = "SELECT encrypted_password FROM accounts_md5"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='md5', passwords=passwords)
+    elif choice == '4':
+        query = "SELECT encrypted_password FROM accounts_sha256"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='SHA-256', passwords=passwords)
+    else:
+        query = "SELECT password FROM accounts_unencrypted"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='None', passwords=passwords)
 
 @app.route('/copy_over')
 def copy():
