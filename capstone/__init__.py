@@ -412,7 +412,7 @@ def login_exposure():
     else:
         return render_template('login_exposure.html')
                 
-'''  
+
 @app.route('/copy_over')
 def copy():
     query = 'SELECT * FROM accounts_unencrypted'
@@ -422,6 +422,7 @@ def copy():
         user = row[1]
         password = row[2]
         balance = row[3]
+        '''
         query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         data = (user, password, balance)
         execute_query(db_connection, query2, data)
@@ -432,6 +433,11 @@ def copy():
         query4 = 'INSERT INTO accounts_base64 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         data = (user, password, balance)
         execute_query(db_connection, query4, data)
+        db_connection.commit()
+        '''
+        query5 = 'INSERT INTO accounts_pb (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        data = (user, password, balance)
+        execute_query(db_connection, query5, data)
         db_connection.commit()
     return "Process Complete"
     
@@ -471,7 +477,7 @@ def encrypt_md5():
         db_connection.commit()
     return "Password encrypted with MD5"
 
-# hashes a password with the secure SHA-256 algorithm
+# hashes a password with the more secure SHA-256 algorithm
 @app.route('/encrypt_sha256')
 def encrypt_sha256():
     query = 'SELECT * FROM accounts_sha256'
@@ -489,6 +495,34 @@ def encrypt_sha256():
         db_connection.commit()
     return "Password encrypted with SHA-256"
 
+# encrypts a password using very secure algorithm
+@app.route('/encrypt_pb')
+def encrypt_pb():
+    query = 'SELECT * FROM accounts_pb'
+    db_connection = connect_to_database()
+    table_rows = execute_query(db_connection, query).fetchall()
+    for row in table_rows:
+        user = row[1]
+        password0 = row[2]
+        password = str.encode(password0)                                                               # convert string to bytes
+        encrypted_password0 = hashlib.pbkdf2_hmac('sha256', password, b'faultyvault', 100000)          # returns pbkdf2 hash
+        encrypted_password = encrypted_password0.hex()                                                 # returns hash in hexadecimal format
+        query1 = 'UPDATE accounts_pb SET encrypted_password = %s WHERE user = %s'
+        data = (str(encrypted_password), user)                  # convert hexadecimal to a string
+        execute_query(db_connection, query1, data)
+        db_connection.commit()
+    return "Password encrypted with PBKDF2"
+
+
+'''
+
+CREATE TABLE `accounts_pb` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user` varchar(30) NOT NULL,
+`encrypted_password` varchar(256) NOT NULL,
+`balance` int NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `accounts_base64` (
 `id` int NOT NULL AUTO_INCREMENT,
