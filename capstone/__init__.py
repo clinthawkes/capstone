@@ -412,6 +412,7 @@ def login_exposure():
     else:
         return render_template('login_exposure.html')
                 
+    
 @app.route('/db_dump', methods=['GET'])
 def db_dump():
     choice = request.args.get('db')
@@ -432,21 +433,26 @@ def db_dump():
         query = "SELECT encrypted_password FROM accounts_sha256"
         passwords = execute_query(db_connection, query).fetchall()
         return render_template('dbDump.html', type='SHA-256', passwords=passwords)
+    elif choice == '5':
+        query = "SELECT encrypted_password FROM accounts_pb"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='PBKDF2', passwords=passwords)
     else:
         query = "SELECT password FROM accounts_unencrypted"
         passwords = execute_query(db_connection, query).fetchall()
         return render_template('dbDump.html', type='None', passwords=passwords)
 
+'''
 @app.route('/copy_over')
 def copy():
-    query = 'SELECT * FROM accounts_unencrypted'
+    query = 'SELECT * FROM accounts_base64'
     db_connection = connect_to_database()
     records = execute_query(db_connection, query).fetchall()
     for row in records:
         user = row[1]
         password = row[2]
         balance = row[3]
-        '''
+       """ 
         query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         data = (user, password, balance)
         execute_query(db_connection, query2, data)
@@ -458,14 +464,15 @@ def copy():
         data = (user, password, balance)
         execute_query(db_connection, query4, data)
         db_connection.commit()
-        '''
-        query5 = 'INSERT INTO accounts_pb (user, encrypted_password, balance) VALUES (%s, %s, %s)'
-        data = (user, password, balance)
+       """ 
+        password = password.split("'")
+        password = password[1]
+        query5 = 'UPDATE accounts_base64 SET encrypted_password=%s WHERE user=%s'
+        data = (password, user)
         execute_query(db_connection, query5, data)
         db_connection.commit()
     return "Process Complete"
 
-'''
  
 # hashes a password with the weak base64 algorithm
 @app.route('/encrypt_base64')
@@ -521,7 +528,6 @@ def encrypt_sha256():
         db_connection.commit()
     return "Password encrypted with SHA-256"
 
-'''    
 
 # encrypts a password using very secure algorithm
 @app.route('/encrypt_pb')
@@ -541,8 +547,6 @@ def encrypt_pb():
         db_connection.commit()
     return "Password encrypted with PBKDF2"
 
-
-'''
 
 CREATE TABLE `accounts_pb` (
 `id` int NOT NULL AUTO_INCREMENT,

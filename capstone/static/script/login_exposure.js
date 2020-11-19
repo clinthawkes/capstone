@@ -1,3 +1,4 @@
+/*
 document.getElementById("sde1").addEventListener("click", function(){
 	document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, encrypted_password FROM accounts_md5;#";
 	document.getElementById('dbToken').value = "2";
@@ -22,4 +23,4 @@ document.getElementById("sde5").addEventListener("click", function(){
 	document.getElementById('UsernameInput').value = "' or 1=1 UNION SELECT user, id, balance, encrypted_password FROM accounts_pb;#";
 	document.getElementById('dbToken').value = "1";
 });
-
+*/
