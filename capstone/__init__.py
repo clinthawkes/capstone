@@ -57,7 +57,7 @@ def register():
         if not any(char.isdigit() for char in password1):
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
-        if len(password1) < 8:
+        if len(password1) < 8 or len(password1) > 30:
             flash('Password Does Not Meet Requirements. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
         # if passwords don't match return error message
@@ -65,7 +65,10 @@ def register():
             flash('Passwords Do Not Match. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
         #This will add the user to all the account tables in the DB
-        #add_user(username, password1, bankBalance)
+        query = "INSERT INTO accounts ('user', 'password', 'balance') VALUES (%s, %s, %s)"
+        data = (username, password1, bankBalance)
+        execute_query(db_connection, query, data)
+        db_connection.commit()
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
@@ -409,7 +412,7 @@ def login_exposure():
     else:
         return render_template('login_exposure.html')
                 
-  
+'''  
 @app.route('/copy_over')
 def copy():
     query = 'SELECT * FROM accounts_unencrypted'
@@ -486,7 +489,7 @@ def encrypt_sha256():
         db_connection.commit()
     return "Password encrypted with SHA-256"
 
-'''
+
 CREATE TABLE `accounts_base64` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user` varchar(30) NOT NULL,
