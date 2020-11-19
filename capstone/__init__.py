@@ -4,9 +4,10 @@ import random
 import mysql.connector
 import re
 import hashlib
+import base64
 from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
-from capstone.db_connector import connect_to_database, execute_query, add_user
+from capstone.db_connector import connect_to_database, execute_query
 
 app = Flask(__name__)
 app = Flask(__name__, static_url_path='/static')
@@ -64,7 +65,7 @@ def register():
             flash('Passwords Do Not Match. Please Try Again!', 'danger')
             return render_template('register.html', attackToken=token, referrer=referrer)
         #This will add the user to all the account tables in the DB
-        add_user(username, password1, bankBalance)
+        #add_user(username, password1, bankBalance)
         # will redirect to the login page (displaying success message)
         # if they have successfully created an account
         flash('Registration Successful! Please Login Below', 'success') 
@@ -407,10 +408,11 @@ def login_exposure():
             return render_template('login_exposure.html')
     else:
         return render_template('login_exposure.html')
-"""
+                
+  
 @app.route('/copy_over')
 def copy():
-    query = 'SELECT * FROM accounts'
+    query = 'SELECT * FROM accounts_unencrypted'
     db_connection = connect_to_database()
     records = execute_query(db_connection, query).fetchall()
     for row in records:
@@ -424,7 +426,29 @@ def copy():
         query3 = 'INSERT INTO accounts_sha256 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         execute_query(db_connection, query3, data)
         db_connection.commit()
+        query4 = 'INSERT INTO accounts_base64 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        data = (user, password, balance)
+        execute_query(db_connection, query4, data)
+        db_connection.commit()
     return "Process Complete"
+    
+# hashes a password with the weak base64 algorithm
+@app.route('/encrypt_base64')
+def encrypt_base64():
+    query = 'SELECT * FROM accounts_base64'
+    db_connection = connect_to_database()
+    table_rows = execute_query(db_connection, query).fetchall()
+    for row in table_rows:
+        user = row[1]
+        password0 = row[2]
+        password = str.encode(password0)                        # convert string to bytes
+        encrypted_password = base64.b64encode(password)        # encode with base64
+        query1 = 'UPDATE accounts_base64 SET encrypted_password = %s WHERE user = %s'
+        data = (str(encrypted_password), user)                  # convert to a string
+        execute_query(db_connection, query1, data)
+        db_connection.commit()
+    return "Password encrypted with Base64"  
+    
 
 # hashes a password with the compromised MD5 algorithm
 @app.route('/encrypt_md5')
@@ -461,7 +485,57 @@ def encrypt_sha256():
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with SHA-256"
-"""
+
+'''
+CREATE TABLE `accounts_base64` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user` varchar(30) NOT NULL,
+`encrypted_password` varchar(256) NOT NULL,
+`balance` int NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `accounts_unencrypted` (
+	`id` mediumint NOT NULL AUTO_INCREMENT,
+  	`user` varchar(30) NOT NULL,
+  	`password` varchar(30) NOT NULL,
+  	`balance` int NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user1', 'password', '100');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user2', 'qwerty', '123');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user3', '123456', '12');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user4', 'starwars', '435');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user5', 'trustno1', '761');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user6', 'baseball', '32');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user7', 'abc123', '9479');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user8', 'letmein', '9479');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user9', 'Passw0rd123', '124879');
+INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user10', '111111', '2');
+
+run /copy-over
+
+DELETE FROM accounts_md5 WHERE user='hibberts';
+DELETE FROM accounts_md5 WHERE user='gatesb';
+DELETE FROM accounts_md5 WHERE user='goldblumj';
+DELETE FROM accounts_md5 WHERE user='admin';
+DELETE FROM accounts_md5 WHERE user='scottm';
+DELETE FROM accounts_md5 WHERE user='test';
+
+DELETE FROM accounts_sha256 WHERE user='hibberts';
+DELETE FROM accounts_sha256 WHERE user='gatesb';
+DELETE FROM accounts_sha256 WHERE user='goldblumj';
+DELETE FROM accounts_sha256 WHERE user='admin';
+DELETE FROM accounts_sha256 WHERE user='scottm';
+DELETE FROM accounts_sha256 WHERE user='test';
+
+run /encrypt-md5
+run /encrypt-sha256
+run /encrypt-base64
+'''
 
 
 if __name__ == "__main__":
