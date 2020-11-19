@@ -440,7 +440,9 @@ def copy():
         execute_query(db_connection, query5, data)
         db_connection.commit()
     return "Process Complete"
-    
+
+'''
+ 
 # hashes a password with the weak base64 algorithm
 @app.route('/encrypt_base64')
 def encrypt_base64():
@@ -494,6 +496,8 @@ def encrypt_sha256():
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with SHA-256"
+
+'''    
 
 # encrypts a password using very secure algorithm
 @app.route('/encrypt_pb')
