@@ -20,10 +20,10 @@
 		<br>
 		<h2>User Login</h2>
 		<br>
-		<button id="sde3" class="btn btn-danger">Dump Unencrypted DB</button>
-		<button id="sde4" class="btn btn-danger">Dump Base64 Encrypted DB</button>
-		<button id="sde1" class="btn btn-danger">Dump MD5 Encrypted DB</button>
-		<button id="sde2" class="btn btn-danger">Dump SHA-256 Encrypted DB</button>
+		<button id="sde3" class="btn btn-danger" onclick = 'window.open("/db_dump?db=1", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump Unencrypted DB</button>
+		<button id="sde4" class="btn btn-danger" onclick = 'window.open("/db_dump?db=2", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump Base64 Encrypted DB</button>
+		<button id="sde1" class="btn btn-danger" onclick = 'window.open("/db_dump?db=3", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump MD5 Encrypted DB</button>
+		<button id="sde2" class="btn btn-danger" onclick = 'window.open("/db_dump?db=4", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=600,height=500")'>Dump SHA-256 Encrypted DB</button>
 		<br>
 		<div class="container mt-3">
 			{% with messages = get_flashed_messages(with_categories=true) %}
