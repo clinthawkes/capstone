@@ -462,6 +462,7 @@ def db_dump():
         passwords = execute_query(db_connection, query).fetchall()
         return render_template('dbDump.html', type='None', passwords=passwords)
 
+'''
 
 @app.route('/copy_over')
 def copy():
@@ -563,7 +564,6 @@ def encrypt_pb():
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with PBKDF2"
-'''
 
 CREATE TABLE `accounts_pb_safe` (
 `id` int NOT NULL AUTO_INCREMENT,
@@ -605,18 +605,6 @@ CREATE TABLE IF NOT EXISTS `accounts_unencrypted_safe` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
-
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user1', 'password', '100');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user2', 'qwerty', '123');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user3', '123456', '12');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user4', 'starwars', '435');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user5', 'trustno1', '761');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user6', 'baseball', '32');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user7', 'abc123', '9479');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user8', 'letmein', '9479');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user9', 'Passw0rd123', '124879');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user10', '111111', '2');
-
 INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user1', '4@s5w0rd#27ac', '100');
 INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user2', '!qW3rtY&303@', '123');
 INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user3', '4a5s#9a2D!!r', '12');
@@ -628,25 +616,12 @@ INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user8',
 INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user9', 'B0o6yTr@p53t', '124879');
 INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user10', '@#1w0nOn3!$', '2');
 
-run /copy-over
+run /copy_over
 
-DELETE FROM accounts_md5 WHERE user='hibberts';
-DELETE FROM accounts_md5 WHERE user='gatesb';
-DELETE FROM accounts_md5 WHERE user='goldblumj';
-DELETE FROM accounts_md5 WHERE user='admin';
-DELETE FROM accounts_md5 WHERE user='scottm';
-DELETE FROM accounts_md5 WHERE user='test';
-
-DELETE FROM accounts_sha256 WHERE user='hibberts';
-DELETE FROM accounts_sha256 WHERE user='gatesb';
-DELETE FROM accounts_sha256 WHERE user='goldblumj';
-DELETE FROM accounts_sha256 WHERE user='admin';
-DELETE FROM accounts_sha256 WHERE user='scottm';
-DELETE FROM accounts_sha256 WHERE user='test';
-
-run /encrypt-md5
-run /encrypt-sha256
-run /encrypt-base64
+run /encrypt_md5
+run /encrypt_sha256
+run /encrypt_base64
+run /encrypt_pb
 '''
 
 
