@@ -22,83 +22,93 @@
 			<div id="unsafe">Click <a id="switchOn" href = "">here</a> to Turn Vulnerability For <span id="vulnerability"></span> On</div>
 				<p id="refer" hidden>{{ referrer }}</p>
 		</div>
-	<br>
-	<h2>User Login</h2>
-	<div id="sqlButtons" style="display:none">
-		<button id="sql1" class="btn btn-info">Login as User Without a Password</button>
-		<button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
-	</div>
-	<div id="xssButtons" style="display:none">
-		<button id="xss1" class="btn btn-info">Test Reflected XSS</button>
-		<button id="xss2" class="btn btn-info" onclick = 'window.open("{{ url_for("phishing_safe") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
-		<button id="xss3" class="btn btn-info">Test Stored XSS</button>
-	</div>
-	<div id="misconfigButtons" style="display:none">
-		<button id="misconfig1" class="btn btn-info">Login with Default Credentials</button>
-		<button id="misconfig2" class="btn btn-info">Display Detailed Error Message</button>
-	</div>
-	<div id="sessionsButtons" style="display:none">
-		<button id="sessions1" class="btn btn-info">Create User Session Cookie</button>
-		<button id="sessions2" class="btn btn-info" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
+		<br>
+		<h2>User Login</h2>
+		<div id="sqlButtons" style="display:none">
+			<button id="sql1" class="btn btn-info">Login as User Without a Password</button>
+			<button id="sql2" class="btn btn-info">Retrieve Contents of User Database</button>
+		</div>
+		<div id="xssButtons" style="display:none">
+			<button id="xss1" class="btn btn-info">Test Reflected XSS</button>
+			<button id="xss2" class="btn btn-info" onclick = 'window.open("{{ url_for("phishing_safe") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=500,height=500")'>Exploit Reflected XSS</button>
+			<button id="xss3" class="btn btn-info">Test Stored XSS</button>
+		</div>
+		<div id="misconfigButtons" style="display:none">
+			<button id="misconfig1" class="btn btn-info">Login with Default Credentials</button>
+			<button id="misconfig2" class="btn btn-info">Display Detailed Error Message</button>
+		</div>
+		<div id="sessionsButtons" style="display:none">
+			<button id="sessions1" class="btn btn-info">Create User Session Cookie</button>
+			<button id="sessions2" class="btn btn-info" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
+		</div>
 	</div>
 	<div id="exposureButtons" style="display:none">
-		<button id="sde1" class="btn btn-info">Dump MD5 Encrypted DB</button>  <button id="sde2" class="btn btn-info">Dump SHA-256 Encrypted DB</button>
-		<button id="sde3" class="btn btn-info">Dump Unencrypted DB</button>
-
+		<button id="sde3" class="btn btn-success" onclick = 'window.open("/db_dump?db=6", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump Unencrypted DB</button>
+		<button id="sde4" class="btn btn-warning" onclick = 'window.open("/db_dump?db=7", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump Base64-Encrypted DB</button>
+		<button id="sde1" class="btn btn-warning" onclick = 'window.open("/db_dump?db=8", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump MD5-Encrypted DB</button>
+		<button id="sde2" class="btn btn-warning" onclick = 'window.open("/db_dump?db=9", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=600,height=500")'>Dump SHA-256-Encrypted DB</button> 
+		<button id="sde5" class="btn btn-danger" onclick = 'window.open("/db_dump?db=10", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=600,height=500")'>Dump PBKDF2-Encrypted DB</button>
 	</div>
-	<div class="container mt-3">
-		{% with messages = get_flashed_messages(with_categories=true) %}
-		{% if messages %}
-			{% for category, message in messages %}
-					<!-- Success Alert -->
-				<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
-					<span class="flash-message">{{ message }}</span>
-					<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			{% endfor %}
-		{% endif %}
-		{% endwith %}
-    	</div>
-	<div class = "login">
-
-		<form action="/login" method="POST">
-			<div class="form-group">
-				<label for="UsernameInput">Username</label>
-				<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
-			</div>
-			<div class="form-group">
-				<label for="PasswordInput">Password </label>
-				<input type="password" id="PasswordInput" placeholder="Password" name="password">
-				<input type="hidden" id="attackToken" name="attackToken" value="{{ attackToken }}">
-			</div>
-			<div>{{ recaptcha }}</div>
-			<br>
-			<button id="LoginButton" type="submit" class="btn btn-primary">Login</button>
-		</form>
+	<div class = "container">
+		<div class="container mt-3">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+						<!-- Success Alert -->
+					<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+						<span class="flash-message">{{ message }}</span>
+						<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
 		</div>
-		<br>
-		<button id = "passwordbtn" class ="btn btn-secondary"> Forgot Your Password? </button>
-		<div id="myModal" class="modal">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<h3>Reset Your Password</h3>
-				<br>
+		<div class = "login">
+
+			<form action="/login" method="POST">
 				<div class="form-group">
-					<p>Please enter the email address you use for Faulty Vault Bank and we'll send you a password reset email</p>
-					<label for="UsernameInput"></label>
-					<input type="text" id="EmailInput" placeholder="Enter Email" name="email">
-					<button id="ResetPasswordButton" class="btn btn-secondary">Send Password Reset Email</button>	
+					<label for="UsernameInput">Username</label>
+					<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
 				</div>
-				<p id = "msg" style="color:green"><b></b></p>	
+				<div class="form-group">
+					<label for="PasswordInput">Password </label>
+					<input type="password" id="PasswordInput" placeholder="Password" name="password">
+					<input type="hidden" id="attackToken" name="attackToken" value="{{ attackToken }}">
+				</div>
+				<div>{{ recaptcha }}</div>
+				<br>
+				<button id="LoginButton" type="submit" class="btn btn-primary">Login</button>
+			</form>
 			</div>
+			<br>
+			<button id = "passwordbtn" class ="btn btn-secondary"> Forgot Your Password? </button>
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<h3>Reset Your Password</h3>
+					<br>
+					<div class="form-group">
+						<p>Please enter the email address you use for Faulty Vault Bank and we'll send you a password reset email</p>
+						<label for="UsernameInput"></label>
+						<input type="text" id="EmailInput" placeholder="Enter Email" name="email">
+						<button id="ResetPasswordButton" class="btn btn-secondary">Send Password Reset Email</button>	
+					</div>
+					<p id = "msg" style="color:green"><b></b></p>	
+				</div>
+			</div>
+			<br>
+			<br>
+			<h6>Don't have an account? <a href = "/register?attackToken={{ attackToken }}">Create Account</a></h6>
 		</div>
-		<br>
-		<br>
-		<h6>Don't have an account? <a href = "/register?attackToken={{ attackToken }}">Create Account</a></h6>
+		<div id="exposureButtons2" style="display:none">
+			<button id = "decrypt1" class="btn btn-warning" onclick = 'window.open("https://codebeautify.org/base64-decode", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode Base64-Encrypted Passwords</button>	
+			<button id = "decrypt2" class="btn btn-warning" onclick = 'window.open("https://crackstation.net/", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode MD5-Encrypted Passwords</button>
+			<button id = "decrypt3" class="btn btn-warning" onclick = 'window.open("https://crackstation.net/", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode SHA-256-Encrypted Passwords</button>
+			<button id = "decrypt4" class="btn btn-danger" onclick = 'window.open("https://crackstation.net/", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode PBKDF2-Encrypted Passwords</button>
+		</div>
 	</div>
-</div>
 </div>
 <script type="text/javascript" src="{{url_for('static', filename='script/login.js')}}"></script>
 {% endblock %}
