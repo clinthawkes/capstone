@@ -437,38 +437,53 @@ def db_dump():
         query = "SELECT encrypted_password FROM accounts_pb"
         passwords = execute_query(db_connection, query).fetchall()
         return render_template('dbDump.html', type='PBKDF2', passwords=passwords)
+    elif choice == '6':
+        query = "SELECT password FROM accounts_unencrypted_safe"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='None', passwords=passwords)
+    elif choice == '7':
+        query = "SELECT encrypted_password FROM accounts_base64_safe"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='base64', passwords=passwords)
+    elif choice == '8':
+        query = "SELECT encrypted_password FROM accounts_md5_safe"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='md5', passwords=passwords)
+    elif choice == '9':
+        query = "SELECT encrypted_password FROM accounts_sha256_safe"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='SHA-256', passwords=passwords)
+    elif choice == '10':
+        query = "SELECT encrypted_password FROM accounts_pb_safe"
+        passwords = execute_query(db_connection, query).fetchall()
+        return render_template('dbDump.html', type='PBKDF2', passwords=passwords)
     else:
         query = "SELECT password FROM accounts_unencrypted"
         passwords = execute_query(db_connection, query).fetchall()
         return render_template('dbDump.html', type='None', passwords=passwords)
 
 '''
+
 @app.route('/copy_over')
 def copy():
-    query = 'SELECT * FROM accounts_base64'
+    query = 'SELECT * FROM accounts_unencrypted_safe'
     db_connection = connect_to_database()
     records = execute_query(db_connection, query).fetchall()
     for row in records:
         user = row[1]
         password = row[2]
         balance = row[3]
-       """ 
-        query2 = 'INSERT INTO accounts_md5 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        query2 = 'INSERT INTO accounts_md5_safe (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         data = (user, password, balance)
         execute_query(db_connection, query2, data)
         db_connection.commit()
-        query3 = 'INSERT INTO accounts_sha256 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
+        query3 = 'INSERT INTO accounts_sha256_safe (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         execute_query(db_connection, query3, data)
         db_connection.commit()
-        query4 = 'INSERT INTO accounts_base64 (user, encrypted_password, balance) VALUES (%s, %s, %s)'
-        data = (user, password, balance)
+        query4 = 'INSERT INTO accounts_base64_safe (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         execute_query(db_connection, query4, data)
         db_connection.commit()
-       """ 
-        password = password.split("'")
-        password = password[1]
-        query5 = 'UPDATE accounts_base64 SET encrypted_password=%s WHERE user=%s'
-        data = (password, user)
+        query5 = 'INSERT INTO accounts_pb_safe (user, encrypted_password, balance) VALUES (%s, %s, %s)'
         execute_query(db_connection, query5, data)
         db_connection.commit()
     return "Process Complete"
@@ -477,7 +492,7 @@ def copy():
 # hashes a password with the weak base64 algorithm
 @app.route('/encrypt_base64')
 def encrypt_base64():
-    query = 'SELECT * FROM accounts_base64'
+    query = 'SELECT * FROM accounts_base64_safe'
     db_connection = connect_to_database()
     table_rows = execute_query(db_connection, query).fetchall()
     for row in table_rows:
@@ -485,8 +500,11 @@ def encrypt_base64():
         password0 = row[2]
         password = str.encode(password0)                        # convert string to bytes
         encrypted_password = base64.b64encode(password)        # encode with base64
-        query1 = 'UPDATE accounts_base64 SET encrypted_password = %s WHERE user = %s'
-        data = (str(encrypted_password), user)                  # convert to a string
+        encrypted_password = str(encrypted_password)            # convert to a string
+        encrypted_password = encrypted_password.split("'")
+        encrypted_password = encrypted_password[1]
+        query1 = 'UPDATE accounts_base64_safe SET encrypted_password = %s WHERE user = %s'
+        data = (encrypted_password, user)                  
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with Base64"  
@@ -495,7 +513,7 @@ def encrypt_base64():
 # hashes a password with the compromised MD5 algorithm
 @app.route('/encrypt_md5')
 def encrypt_md5():
-    query = 'SELECT * FROM accounts_md5'
+    query = 'SELECT * FROM accounts_md5_safe'
     db_connection = connect_to_database()
     table_rows = execute_query(db_connection, query).fetchall()
     for row in table_rows:
@@ -504,7 +522,7 @@ def encrypt_md5():
         password = str.encode(password0)                        # convert string to bytes
         encrypted_password0 = hashlib.md5(password)             # returns md5 hash
         encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format
-        query1 = 'UPDATE accounts_md5 SET encrypted_password = %s WHERE user = %s'
+        query1 = 'UPDATE accounts_md5_safe SET encrypted_password = %s WHERE user = %s'
         data = (str(encrypted_password), user)                  # convert hexadecimal to a string
         execute_query(db_connection, query1, data)
         db_connection.commit()
@@ -513,7 +531,7 @@ def encrypt_md5():
 # hashes a password with the more secure SHA-256 algorithm
 @app.route('/encrypt_sha256')
 def encrypt_sha256():
-    query = 'SELECT * FROM accounts_sha256'
+    query = 'SELECT * FROM accounts_sha256_safe'
     db_connection = connect_to_database()
     table_rows = execute_query(db_connection, query).fetchall()
     for row in table_rows:
@@ -522,7 +540,7 @@ def encrypt_sha256():
         password = str.encode(password0)                        # convert string to bytes
         encrypted_password0 = hashlib.sha256(password)          # returns sha-256 hash
         encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format
-        query1 = 'UPDATE accounts_sha256 SET encrypted_password = %s WHERE user = %s'
+        query1 = 'UPDATE accounts_sha256_safe SET encrypted_password = %s WHERE user = %s'
         data = (str(encrypted_password), user)                  # convert hexadecimal to a string
         execute_query(db_connection, query1, data)
         db_connection.commit()
@@ -532,7 +550,7 @@ def encrypt_sha256():
 # encrypts a password using very secure algorithm
 @app.route('/encrypt_pb')
 def encrypt_pb():
-    query = 'SELECT * FROM accounts_pb'
+    query = 'SELECT * FROM accounts_pb_safe'
     db_connection = connect_to_database()
     table_rows = execute_query(db_connection, query).fetchall()
     for row in table_rows:
@@ -541,14 +559,13 @@ def encrypt_pb():
         password = str.encode(password0)                                                               # convert string to bytes
         encrypted_password0 = hashlib.pbkdf2_hmac('sha256', password, b'faultyvault', 100000)          # returns pbkdf2 hash
         encrypted_password = encrypted_password0.hex()                                                 # returns hash in hexadecimal format
-        query1 = 'UPDATE accounts_pb SET encrypted_password = %s WHERE user = %s'
+        query1 = 'UPDATE accounts_pb_safe SET encrypted_password = %s WHERE user = %s'
         data = (str(encrypted_password), user)                  # convert hexadecimal to a string
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with PBKDF2"
 
-
-CREATE TABLE `accounts_pb` (
+CREATE TABLE `accounts_pb_safe` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user` varchar(30) NOT NULL,
 `encrypted_password` varchar(256) NOT NULL,
@@ -556,7 +573,7 @@ CREATE TABLE `accounts_pb` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `accounts_base64` (
+CREATE TABLE `accounts_md5_safe` (
 `id` int NOT NULL AUTO_INCREMENT,
 `user` varchar(30) NOT NULL,
 `encrypted_password` varchar(256) NOT NULL,
@@ -564,46 +581,47 @@ CREATE TABLE `accounts_base64` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `accounts_sha256_safe` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user` varchar(30) NOT NULL,
+`encrypted_password` varchar(256) NOT NULL,
+`balance` int NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `accounts_unencrypted` (
-	`id` mediumint NOT NULL AUTO_INCREMENT,
-  	`user` varchar(30) NOT NULL,
-  	`password` varchar(30) NOT NULL,
-  	`balance` int NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE `accounts_base64_safe` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user` varchar(30) NOT NULL,
+`encrypted_password` varchar(256) NOT NULL,
+`balance` int NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `accounts_unencrypted_safe` (
+`id` int NOT NULL AUTO_INCREMENT,
+`user` varchar(30) NOT NULL,
+`password` varchar(30) NOT NULL,
+`balance` int NOT NULL,
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
 
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user1', 'password', '100');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user2', 'qwerty', '123');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user3', '123456', '12');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user4', 'starwars', '435');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user5', 'trustno1', '761');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user6', 'baseball', '32');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user7', 'abc123', '9479');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user8', 'letmein', '9479');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user9', 'Passw0rd123', '124879');
-INSERT INTO accounts_unencrypted (user, password, balance) VALUES ('user10', '111111', '2');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user1', '4@s5w0rd#27ac', '100');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user2', '!qW3rtY&303@', '123');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user3', '4a5s#9a2D!!r', '12');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user4', '$t@rW@r5!925', '435');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user5', '7Ru57n0#1!!!', '761');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user6', '6a$3baL1!247', '32');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user7', '@6(l2E*222bb', '9479');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user8', 'B3@r$RB3$t!DKS', '9479');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user9', 'B0o6yTr@p53t', '124879');
+INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user10', '@#1w0nOn3!$', '2');
 
-run /copy-over
+run /copy_over
 
-DELETE FROM accounts_md5 WHERE user='hibberts';
-DELETE FROM accounts_md5 WHERE user='gatesb';
-DELETE FROM accounts_md5 WHERE user='goldblumj';
-DELETE FROM accounts_md5 WHERE user='admin';
-DELETE FROM accounts_md5 WHERE user='scottm';
-DELETE FROM accounts_md5 WHERE user='test';
-
-DELETE FROM accounts_sha256 WHERE user='hibberts';
-DELETE FROM accounts_sha256 WHERE user='gatesb';
-DELETE FROM accounts_sha256 WHERE user='goldblumj';
-DELETE FROM accounts_sha256 WHERE user='admin';
-DELETE FROM accounts_sha256 WHERE user='scottm';
-DELETE FROM accounts_sha256 WHERE user='test';
-
-run /encrypt-md5
-run /encrypt-sha256
-run /encrypt-base64
+run /encrypt_md5
+run /encrypt_sha256
+run /encrypt_base64
+run /encrypt_pb
 '''
 
 
