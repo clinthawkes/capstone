@@ -570,7 +570,7 @@ def encrypt_pb():
 #####              VULNERABILTY 6: XXE INJECTION            ######
 ##################################################################
 
-# user login on login page for XXE injection vulnerability
+# user login page for XXE injection vulnerability
 @app.route('/login_xxe', methods = ['GET', 'POST'])
 def login_xxe():
     if request.method == 'POST':
