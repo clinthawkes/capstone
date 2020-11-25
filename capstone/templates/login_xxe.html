@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Login {% endblock %}
+{% block head %}
+	<title>Login</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<div class="text-center">
+<div class = "jumbotron">
+	<div class="logo">
+		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
+	</div>
+	<br>
+	<br>
+	<div class = "container">
+		<div class = "container">
+			<div class="alert alert-danger">
+				&#9888;
+				<i><strong>Warning!</strong> Vulnerability for XXE <strong>on!</strong> Click <a href = "/login?attackToken=6">here</a> to switch off</i>
+			</div>
+		</div>
+	<br>
+	<h2>User Login</h2>
+	<br>
+	<button id="xxe1" class="btn btn-danger">Login To Demo Attack</button>
+	<br>
+	<div class="container mt-3">
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+
+		{% for category, message in messages %}
+				<!-- Success Alert -->
+			<div class="d-flex justify-content-center align-items-center alert alert-{{ category }} alert-dismissible fade show" role="alert">
+				<span class="flash-message">{{ message }}</span>
+				<button type="button" class="d-flex mt-2 close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		{% endfor %}
+
+		{% endif %}
+		{% endwith %}
+    </div>
+	<div class = "login">
+		<form action="/login_xxe" method="POST">
+			<div class="form-group">
+				<label for="UsernameInput">Username</label>
+				<input type="text" id="UsernameInput" placeholder="Enter Username" name="username">
+			</div>
+			<div class="form-group">
+				<label for="PasswordInput">Password </label>
+				<input type="password" id="PasswordInput" placeholder="Password" name="password">
+				<input type="hidden" id="attackToken" name="attackToken" value="6">
+			</div>
+	</div>
+	<br>
+	<button id="LoginButton" type="submit" class="btn btn-primary">Login</button>
+	</form>
+	</div>
+	<br>
+	<br>
+	<h6>Don't have an account? <a href = "/register?attackToken=6">Create Account</a></h6>
+	{% if log is defined %}
+	<script> alert( 	
+		{% for entry in log %}
+	    		"{{ entry }}\n" + 
+		{% endfor %}
+		{% for v in log2 %}
+	    		"{{ v }}\n" + 
+		{% endfor %}
+		""
+		);</script>
+		{% for entry in log %}
+			<script>console.log("{{ entry }}");</script> 
+		{% endfor %}
+		{% for v in log2 %}
+			<script>console.log("{{ v }}");</script> 
+		{% endfor %}
+	{% endif %}
+
+</div>
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='script/login_xxe.js')}}"></script>
+{% endblock %}

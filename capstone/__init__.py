@@ -564,66 +564,46 @@ def encrypt_pb():
         execute_query(db_connection, query1, data)
         db_connection.commit()
     return "Password encrypted with PBKDF2"
-
-CREATE TABLE `accounts_pb_safe` (
-`id` int NOT NULL AUTO_INCREMENT,
-`user` varchar(30) NOT NULL,
-`encrypted_password` varchar(256) NOT NULL,
-`balance` int NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `accounts_md5_safe` (
-`id` int NOT NULL AUTO_INCREMENT,
-`user` varchar(30) NOT NULL,
-`encrypted_password` varchar(256) NOT NULL,
-`balance` int NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `accounts_sha256_safe` (
-`id` int NOT NULL AUTO_INCREMENT,
-`user` varchar(30) NOT NULL,
-`encrypted_password` varchar(256) NOT NULL,
-`balance` int NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `accounts_base64_safe` (
-`id` int NOT NULL AUTO_INCREMENT,
-`user` varchar(30) NOT NULL,
-`encrypted_password` varchar(256) NOT NULL,
-`balance` int NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `accounts_unencrypted_safe` (
-`id` int NOT NULL AUTO_INCREMENT,
-`user` varchar(30) NOT NULL,
-`password` varchar(30) NOT NULL,
-`balance` int NOT NULL,
-PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000001 DEFAULT CHARSET=utf8;
-
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user1', '4@s5w0rd#27ac', '100');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user2', '!qW3rtY&303@', '123');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user3', '4a5s#9a2D!!r', '12');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user4', '$t@rW@r5!925', '435');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user5', '7Ru57n0#1!!!', '761');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user6', '6a$3baL1!247', '32');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user7', '@6(l2E*222bb', '9479');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user8', 'B3@r$RB3$t!DKS', '9479');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user9', 'B0o6yTr@p53t', '124879');
-INSERT INTO accounts_unencrypted_safe (user, password, balance) VALUES ('user10', '@#1w0nOn3!$', '2');
-
-run /copy_over
-
-run /encrypt_md5
-run /encrypt_sha256
-run /encrypt_base64
-run /encrypt_pb
 '''
 
+##################################################################
+#####              VULNERABILTY 6: XXE INJECTION            ######
+##################################################################
 
+# user login on login page for XXE injection vulnerability
+@app.route('/login_xxe', methods = ['GET', 'POST'])
+def login_xxe():
+    if request.method == 'POST':
+        user = request.form['username']
+        password = request.form['password']
+        token = request.form['attackToken']
+        connection = connect_to_database()
+        query = 'SELECT * FROM accounts WHERE user = %s AND password = %s'
+        data = (user, password)
+        userAccount = execute_query(connection, query, data).fetchall()
+        # if user account exists load account page
+        if userAccount:
+            return render_template('account_xxe.html', user=userAccount)
+        else:
+            flash('Incorrect Username/Password', 'danger')
+            return render_template('login_xxe.html', attackToken=token)
+    else:
+        token = request.args.get('attackToken')
+        return render_template('login_xxe.html', attackToken=token)
+        
+# loads user's account details page
+@app.route('/account_xxe/<user>', methods=['GET'])
+def account_xxe(user):
+    # check user is logged in
+    if 'loggedin' in session:
+        display_row = 'SELECT * from `accounts` WHERE `user` = %s' %(user)
+        row_result = execute_query(db_connection, display_row).fetchone();
+        return render_template('account_xxe.html', user = session['user'], row = row_result)
+    # if not logged in redirect to login page
+    else:
+        return redirect(url_for('login_xxe'))
+
+        
+        
 if __name__ == "__main__":
     app.run()
