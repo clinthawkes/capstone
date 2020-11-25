@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %} Account Details {% endblock %}
+{% block head %}
+	<title>Account Details</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<div class = "text-center">
+	<div class = "jumbotron">
+		<div class="logo">
+		<img src="{{url_for('static', filename='images/bank_logo.gif')}}" img width="50%" img height= "50%" >
+		</div>
+		<br>
+		<br>
+		<div class="alert alert-success">
+			You have logged in successfully!
+		</div>
+		<h2>Account Details</h2>
+		<br>
+		<h4><i>Hello,{{ user[0][1] }}!</i></h3>
+		<table style="width:50%" table border="1" table align = "center">
+			  <thead>
+				<th>Account Number</th>
+				<th>Account Balance </th>
+			  </thead>
+			  <tbody>
+				{% for r in user %}
+				<tr>
+					<td>{{r.0}}</td>
+					<td>{{r[3]}}</td>
+				</tr>
+				{% endfor %}
+				</tbody>	
+		</table>
+		<br>
+		<br>
+		<div class = "eDeposit">
+			<h4>Faulty Vault eDeposit®</h4>
+			<br>
+			<p><i>Faulty Vault eDeposit®</i> allows you to deposit personal cheques via picture upload!</p>
+			<p>Upload a JPEG or PNG image of the cheque below and we'll do the rest!</p>
+			<br>
+			<form action="">
+				<label for="img">Select image:</label>
+				<input type="file" id="img" name="img" accept="image/*">
+				<input type="submit">
+			</form>
+			<br>
+			<a class="btn btn-secondary" style="display:none" id="download" href="" download="">Download Cheque Image</a>
+			<br>
+			<p>Your cheque will be deposited in 4-400 business days!</p>
+		</div>
+		<br>
+		<br>
+		<form method="POST" action="{{ url_for('withdraw') }}">
+			<button type="submit" class="btn btn-danger">Withdraw Funds</button>
+			<input type = "hidden" id = "username" name = "username" value = {{ user[0][1] }}>
+		</form>
+		<br>
+		<form method="POST" action="{{ url_for('logout') }}">
+			<button type="submit" class="btn btn-primary">Logout</button>
+		</form>
+	</div>	
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='script/account_xxe.js')}}"></script>	
+{% endblock %}

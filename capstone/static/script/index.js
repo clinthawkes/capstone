@@ -49,7 +49,19 @@ window.addEventListener("load",function() {
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/.pdf';
 	    document.getElementById("download").download = '.pdf';
-	    document.getElementById("login").href = '/login_exposure';
+	    document.getElementById("login").href = '/login_exposure?attackToken=5';
+		     } else if (target == '6') {
+			document.getElementById("1text").style.display = 'none';
+			document.getElementById("2text").style.display = 'none';
+			document.getElementById("3text").style.display = 'none';
+			document.getElementById("4text").style.display = 'none';
+			document.getElementById("5text").style.display = 'none';
+			document.getElementById("6text").style.display = 'block';
+	    document.getElementById("login").style.display = 'block';
+	    document.getElementById("download").style.display = 'block';
+	    document.getElementById("download").href = '/static/files/.pdf';
+	    document.getElementById("download").download = '.pdf';
+	    document.getElementById("login").href = '/login_xxe?attackToken=6';
         } else {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
