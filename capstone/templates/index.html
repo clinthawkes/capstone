@@ -57,8 +57,9 @@
             </div>
             <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="5text">
                 <h3>Sensitive Data Exposure</h3>
-                <h4>Overview</h4>
-		<p>Text for sensitive data exposure</p>
+		<h4>Overview</h4>
+		<p>Sensitive Data Exposure involves the unintentional exposure of sensitive data which was not properly protected or cryptographically-secured. If sensitive data is stored in plain text or encrypted with a weak or deprecated encryption algorithm it can easily be recovered following an attack such as SQL injection. For instance, if a password database uses simple hashes to store user passwords and an attacker is somehow able to gain access to the database, the attacker may be able to look up these hashed passwords in something called a rainbow table. A rainbow table is a precomputed table containing the output of cryptographic hash functions, specifically used for cracking password hashes. If the hashed passwords are listed in the rainbow table, the attacker now has a list of viable user passwords.</p>
+		<p>There is a wide spectrum of encryption algorithms available. In this project, we decided to utilize the following encoding scheme and encryption algorithms in order to test their abilities at preventing Sensitive Data Exposure following an SQL injection.</p>
             </div>
 			 <div class="container writeup mt-5 shadow rounded p-5" style="display:none" id="6text">
                 <h3>XXE Injection</h3>
