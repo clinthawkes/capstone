@@ -47,8 +47,8 @@ window.addEventListener("load",function() {
             document.getElementById("5text").style.display = 'block';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
-	    document.getElementById("download").href = '/static/files/.pdf';
-	    document.getElementById("download").download = '.pdf';
+	    document.getElementById("download").href = '/static/files/sensitive_data_exposure.pdf';
+	    document.getElementById("download").download = 'sensitive_data_exposure.pdf';
 	    document.getElementById("login").href = '/login_exposure';
         } else {
             document.getElementById("1text").style.display = 'none';
