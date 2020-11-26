@@ -12,7 +12,7 @@ $(function() {
                 console.log(data);
 		if (typeof(data) === 'string' || data instanceof String) {
 			document.getElementById('postData').innerHTML = '<img id="rendered" src="" />';
-			document.getElementById('rendered').src = "/static/files/" + data;
+			document.getElementById('rendered').src = "/static/files/uploads/" + data;
 		}else{
 			document.getElementById('postData').innerHTML = data;
 		}

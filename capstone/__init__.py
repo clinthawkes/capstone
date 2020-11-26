@@ -17,7 +17,7 @@ recaptcha = ReCaptcha(app=app)
 app.config['RECAPTCHA_SITE_KEY'] = '6LeuC-IZAAAAAPM_WuD2YkPp5iN5aagaWNcX-NfD'
 app.config['RECAPTCHA_SECRET_KEY'] = '6LeuC-IZAAAAAD0y8l_-XoV81H3RbfxG0a4a6ndX'
 app.config['RECAPTCHA_ENABLED'] = True
-app.config['UPLOAD_PATH'] = '/var/www/capstone/capstone/static/files'
+app.config['UPLOAD_PATH'] = '/var/www/capstone/capstone/static/files/uploads'
 
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
