@@ -5,6 +5,8 @@ import mysql.connector
 import re
 import hashlib
 import base64
+import cairosvg
+from lxml import etree
 from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
 from capstone.db_connector import connect_to_database, execute_query
@@ -15,6 +17,7 @@ recaptcha = ReCaptcha(app=app)
 app.config['RECAPTCHA_SITE_KEY'] = '6LeuC-IZAAAAAPM_WuD2YkPp5iN5aagaWNcX-NfD'
 app.config['RECAPTCHA_SECRET_KEY'] = '6LeuC-IZAAAAAD0y8l_-XoV81H3RbfxG0a4a6ndX'
 app.config['RECAPTCHA_ENABLED'] = True
+app.config['UPLOAD_PATH'] = '/var/www/capstone/capstone/static/files'
 
 recaptcha = ReCaptcha()
 recaptcha.init_app(app)
@@ -569,6 +572,33 @@ def encrypt_pb():
 ##################################################################
 #####              VULNERABILTY 6: XXE INJECTION            ######
 ##################################################################
+'''
+def elem2dict(node):
+    """
+    Convert an lxml.etree node tree into a dict.
+    """
+    result = {}
+    for element in node:
+        # Remove namespace prefix
+        key = element.tag.split('}')[1] if '}' in element.tag else element.tag
+
+        # Process element as tree element if the inner XML contains non-whitespace content
+        if element.text and element.text.strip():
+            value = element.text
+        else:
+            value = elem2dict(element)
+        if key in result:
+
+
+            if type(result[key]) is list:
+                result[key].append(value)
+            else:
+                tempvalue = result[key].copy()
+                result[key] = [tempvalue, value]
+        else:
+            result[key] = value
+    return result
+'''
 
 # user login page for XXE injection vulnerability
 @app.route('/login_xxe', methods = ['GET', 'POST'])
@@ -603,7 +633,27 @@ def account_xxe(user):
     else:
         return redirect(url_for('login_xxe'))
 
-        
+@app.route('/uploadImg', methods=['POST'])
+def upload_img():
+    uploaded = request.files['img']
+    filename = uploaded.filename
+    location = os.path.join(app.config['UPLOAD_PATH'], filename)
+
+    if filename != '':
+        uploaded.save(location)
+
+    nameList = filename.split('.')
+    if nameList[len(nameList)-1] == 'svg':
+        parser = etree.XMLParser(resolve_entities=True)
+        newName = nameList[0] + '.png'
+        tree = etree.parse(location, parser=parser)
+        if os.path.exists(location):
+            os.remove(location)
+        tree.write(location, encoding="us-ascii", method="xml")
+        #return elem2dict(tree.getroot())
+
+    return filename 
+
         
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

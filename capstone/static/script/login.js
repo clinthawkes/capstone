@@ -52,6 +52,15 @@ window.addEventListener("load",function() {
 		document.getElementById("attackToken").value = "5";
 		document.getElementById("exposureButtons").style.display = '';
 		document.getElementById("exposureButtons2").style.display = '';
+	} else if (path == "6"){
+		document.getElementById('vulnerability').innerHTML = "XXE";
+		document.getElementById('switchOn').href = "/login_xxe";
+		document.getElementById("attackToken").value = "6";
+		document.getElementById("xxeButtons").style.display = '';
+		document.getElementById("xxe1").addEventListener("click", function(){
+			document.getElementById('UsernameInput').value = "scottm";
+			document.getElementById('PasswordInput').value = "DundlerMifflin123!";
+		});
 	} else{
 		document.getElementById("unsafe").style.display = 'none';
 	}

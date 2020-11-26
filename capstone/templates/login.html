@@ -41,6 +41,9 @@
 			<button id="sessions1" class="btn btn-info">Create User Session Cookie</button>
 			<button id="sessions2" class="btn btn-info" onclick = 'window.open("{{ url_for("cookie_decoder") }}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=800,left=800,width=800,height=800")'>Decode User's Session Cookie</button>
 		</div>
+		<div id="xxeButtons" style="display:none">
+			<button id="xxe1" class="btn btn-danger">Login To Demo Attack</button>
+		</div>
 	</div>
 	<div id="exposureButtons" style="display:none">
 		<button id="sde3" class="btn btn-success" onclick = 'window.open("/db_dump?db=6", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=300,left=100,width=500,height=500")'>Dump Unencrypted DB</button>
