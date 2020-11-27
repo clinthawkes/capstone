@@ -5,6 +5,9 @@ window.addEventListener("load",function() {
             document.getElementById("2text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
             document.getElementById("1text").style.display = 'block';
+            document.getElementById("4text").style.display = 'none';
+            document.getElementById("5text").style.display = 'none';
+            document.getElementById("6text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/sql_inj.pdf';
@@ -14,6 +17,9 @@ window.addEventListener("load",function() {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("3text").style.display = 'none';
             document.getElementById("2text").style.display = 'block';
+            document.getElementById("4text").style.display = 'none';
+            document.getElementById("5text").style.display = 'none';
+            document.getElementById("6text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/XSS.pdf';
@@ -23,6 +29,9 @@ window.addEventListener("load",function() {
             document.getElementById("1text").style.display = 'none';
             document.getElementById("2text").style.display = 'none';
             document.getElementById("3text").style.display = 'block';
+            document.getElementById("4text").style.display = 'none';
+            document.getElementById("5text").style.display = 'none';
+            document.getElementById("6text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/security_misconfig.pdf';
@@ -34,6 +43,7 @@ window.addEventListener("load",function() {
             document.getElementById("3text").style.display = 'none';
             document.getElementById("4text").style.display = 'block';
             document.getElementById("5text").style.display = 'none';
+            document.getElementById("6text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
 	    document.getElementById("download").href = '/static/files/broken_authentication.pdf';
@@ -45,10 +55,11 @@ window.addEventListener("load",function() {
             document.getElementById("3text").style.display = 'none';
             document.getElementById("4text").style.display = 'none';
             document.getElementById("5text").style.display = 'block';
+          	document.getElementById("6text").style.display = 'none';
 	    document.getElementById("login").style.display = 'block';
 	    document.getElementById("download").style.display = 'block';
-	    document.getElementById("download").href = '/static/files/.pdf';
-	    document.getElementById("download").download = '.pdf';
+	    document.getElementById("download").href = '/static/files/sensitive_data_exposure.pdf';
+	    document.getElementById("download").download = 'sensitive_data_exposure.pdf';
 	    document.getElementById("login").href = '/login_exposure?attackToken=5';
 		     } else if (target == '6') {
 			document.getElementById("1text").style.display = 'none';

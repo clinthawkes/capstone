@@ -174,3 +174,7 @@ a {
   margin: auto;
 }
 
+#rendered {
+  max-height: 100%;
+  max-width: 100%;
+}
