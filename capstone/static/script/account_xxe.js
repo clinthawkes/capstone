@@ -22,5 +22,5 @@ $(function() {
 });
 
 document.getElementById("download").style.display = 'block';
-document.getElementById("download").href = '/static/files/cheque.svg';
-document.getElementById("download").download = 'cheque.svg';
+document.getElementById("download").href = '/static/files/check.svg';
+document.getElementById("download").download = 'check.svg';
