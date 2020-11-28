@@ -654,6 +654,28 @@ def upload_img():
 
     return filename 
 
+@app.route('/uploadImg_safe', methods=['POST'])
+def upload_img_safe():
+    uploaded = request.files['img']
+    filename = uploaded.filename
+    location = os.path.join(app.config['UPLOAD_PATH'], filename)
+
+    if filename != '':
+        uploaded.save(location)
+
+    return filename 
+'''
+    nameList = filename.split('.')
+    if nameList[len(nameList)-1] == 'svg':
+        parser = etree.XMLParser(resolve_entities=True)
+        newName = nameList[0] + '.png'
+        tree = etree.parse(location, parser=parser)
+        if os.path.exists(location):
+            os.remove(location)
+        tree.write(location, encoding="us-ascii", method="xml")
+        #return elem2dict(tree.getroot())
+'''
+
         
 if __name__ == "__main__":
     app.run(debug=True)
