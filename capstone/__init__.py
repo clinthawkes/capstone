@@ -419,6 +419,7 @@ def login_exposure():
 def db_dump():
     choice = request.args.get('db')
     db_connection = connect_to_database()
+    #depending on the button the user clicks, these next lines will dump the appropriate database
     if choice == '1':
         query = "SELECT password FROM accounts_unencrypted"
         passwords = execute_query(db_connection, query).fetchall()
