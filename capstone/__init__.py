@@ -5,7 +5,6 @@ import mysql.connector
 import re
 import hashlib
 import base64
-import cairosvg
 from lxml import etree
 from flask_recaptcha import ReCaptcha
 from flask import Flask, flash, request, redirect, render_template, url_for, session
@@ -572,33 +571,6 @@ def encrypt_pb():
 ##################################################################
 #####              VULNERABILTY 6: XXE INJECTION            ######
 ##################################################################
-'''
-def elem2dict(node):
-    """
-    Convert an lxml.etree node tree into a dict.
-    """
-    result = {}
-    for element in node:
-        # Remove namespace prefix
-        key = element.tag.split('}')[1] if '}' in element.tag else element.tag
-
-        # Process element as tree element if the inner XML contains non-whitespace content
-        if element.text and element.text.strip():
-            value = element.text
-        else:
-            value = elem2dict(element)
-        if key in result:
-
-
-            if type(result[key]) is list:
-                result[key].append(value)
-            else:
-                tempvalue = result[key].copy()
-                result[key] = [tempvalue, value]
-        else:
-            result[key] = value
-    return result
-'''
 
 # user login page for XXE injection vulnerability
 @app.route('/login_xxe', methods = ['GET', 'POST'])
@@ -635,46 +607,42 @@ def account_xxe(user):
 
 @app.route('/uploadImg', methods=['POST'])
 def upload_img():
+    #file object that the user chose to upload is assigned to "uploaded"
     uploaded = request.files['img']
     filename = uploaded.filename
+    #creates the file path where the image will be stored
     location = os.path.join(app.config['UPLOAD_PATH'], filename)
 
+    #ensures the file that was uploaded has a name before saving on the server
     if filename != '':
         uploaded.save(location)
 
+    #splits the filename into parts so the extension can be verified
     nameList = filename.split('.')
     if nameList[len(nameList)-1] == 'svg':
+        #all svg images will be parsed before they are saved on the server
         parser = etree.XMLParser(resolve_entities=True)
-        newName = nameList[0] + '.png'
         tree = etree.parse(location, parser=parser)
+        #deletes the original file so the parsed file can take its place
         if os.path.exists(location):
             os.remove(location)
         tree.write(location, encoding="us-ascii", method="xml")
-        #return elem2dict(tree.getroot())
 
+    #returns filename so the app can refernce the correct image
     return filename 
 
 @app.route('/uploadImg_safe', methods=['POST'])
 def upload_img_safe():
     uploaded = request.files['img']
     filename = uploaded.filename
+    #creates the file path where the image will be stored
     location = os.path.join(app.config['UPLOAD_PATH'], filename)
-
+    #if filename is not blank, all images will be saved the same way.
     if filename != '':
         uploaded.save(location)
 
+    #returns filename so the app can refernce the correct image
     return filename 
-'''
-    nameList = filename.split('.')
-    if nameList[len(nameList)-1] == 'svg':
-        parser = etree.XMLParser(resolve_entities=True)
-        newName = nameList[0] + '.png'
-        tree = etree.parse(location, parser=parser)
-        if os.path.exists(location):
-            os.remove(location)
-        tree.write(location, encoding="us-ascii", method="xml")
-        #return elem2dict(tree.getroot())
-'''
 
         
 if __name__ == "__main__":

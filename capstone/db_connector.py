@@ -45,33 +45,6 @@ def execute_query(db_connection = None, query = None, query_params = ()):
     #db_connection.commit();
     return cursor
 
-def add_user(username, password, balance):
-    connection = connect_to_database()
-
-    query = 'INSERT INTO accounts(user, password, balance) VALUES(%s, %s, %s)'
-    data = (username, password, balance)                  # convert hexadecimal to a string
-    execute_query(connection, query, data)
-    connection.commit()
-
-    passwd = str.encode(password)                        # convert string to bytes
-    encrypted_password0 = hashlib.md5(passwd)             # returns md5 hash
-    encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format
-    query1 = 'INSERT INTO accounts_md5(user, encrypted_password, balance) VALUES(%s, %s, %s)'
-    data1 = (username, str(encrypted_password), balance)                  # convert hexadecimal to a string
-    execute_query(connection, query1, data1)
-    connection.commit()
-
-    passwd = str.encode(password)                        # convert string to bytes
-    encrypted_password0 = hashlib.sha256(passwd)          # returns sha-256 hash
-    encrypted_password = encrypted_password0.hexdigest()    # returns encoded data in hexadecimal format 
-    query2 = 'INSERT INTO accounts_sha256(user, encrypted_password, balance) VALUES(%s, %s, %s)'
-    data2 = (username, str(encrypted_password), balance)                  # convert hexadecimal to a string
-    execute_query(connection, query2, data2)
-    connection.commit()
-     
-    connection.close() 
-    return 
-
 
 if __name__ == '__main__':
     print("Executing a sample query on the database using the credentials from db_credentials.py")
